@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/GuideMe/static/css/main.9da04bab.chunk.css",
+    "main.js": "/GuideMe/static/js/main.ab82c94c.chunk.js",
+    "main.js.map": "/GuideMe/static/js/main.ab82c94c.chunk.js.map",
+    "runtime-main.js": "/GuideMe/static/js/runtime-main.222f9010.js",
+    "runtime-main.js.map": "/GuideMe/static/js/runtime-main.222f9010.js.map",
+    "static/css/2.1a02f21c.chunk.css": "/GuideMe/static/css/2.1a02f21c.chunk.css",
+    "static/js/2.f34e03ff.chunk.js": "/GuideMe/static/js/2.f34e03ff.chunk.js",
+    "static/js/2.f34e03ff.chunk.js.map": "/GuideMe/static/js/2.f34e03ff.chunk.js.map",
+    "index.html": "/GuideMe/index.html",
+    "static/css/2.1a02f21c.chunk.css.map": "/GuideMe/static/css/2.1a02f21c.chunk.css.map",
+    "static/css/main.9da04bab.chunk.css.map": "/GuideMe/static/css/main.9da04bab.chunk.css.map",
+    "static/js/2.f34e03ff.chunk.js.LICENSE.txt": "/GuideMe/static/js/2.f34e03ff.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.222f9010.js",
+    "static/css/2.1a02f21c.chunk.css",
+    "static/js/2.f34e03ff.chunk.js",
+    "static/css/main.9da04bab.chunk.css",
+    "static/js/main.ab82c94c.chunk.js"
+  ]
+}
