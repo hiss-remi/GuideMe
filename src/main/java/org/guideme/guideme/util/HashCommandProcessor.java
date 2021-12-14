@@ -1,22 +1,20 @@
 package org.guideme.guideme.util;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.graphics.Color;
-import org.guideme.guideme.settings.ComonFunctions;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class HashCommandProcessor {
 
-    private HashMap<String, Object> args = new HashMap();
-    private HashMap<String, HashParam> mapper;
+    private Map<String, Object> args = new CaseInsensitiveMap();
+    private Map<String, HashParam> mapper;
     private static Logger logger = LogManager.getLogger();
 
-    public HashCommandProcessor(HashMap<String, HashParam> mapper)
+    public HashCommandProcessor(Map<String, HashParam> mapper)
     {
         this.mapper = mapper;
     }
@@ -25,7 +23,7 @@ public class HashCommandProcessor {
     public void parse(NativeObject input)
     {
         for (Object id: input.getIds()) {
-            String key =  id.toString().toLowerCase();
+            String key =  id.toString();
             if (mapper.containsKey(key))
             {
                 args.put(key, mapper.get(key).parse(input.get(key)));

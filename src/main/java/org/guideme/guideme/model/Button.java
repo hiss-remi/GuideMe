@@ -3,7 +3,9 @@ package org.guideme.guideme.model;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.eclipse.swt.graphics.Color;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
@@ -108,46 +110,46 @@ public class Button  implements Comparable<Button>
 
 		this.target = processor.getString("target");
 		this.text = processor.getString("text");
-		this.ifNotSet = processor.getString("ifnotset");
-		this.ifSet = processor.getString("ifset");
+		this.ifNotSet = processor.getString("ifNotSet");
+		this.ifSet = processor.getString("ifSet");
 		this.set = processor.getString("set");
 		this.unSet = processor.getString("unset");
-		String temp = processor.getString("jscript");
+		String temp = processor.getString("jScript");
 		if (temp == "")
 		{
 			temp = processor.getString("script");
 			if (temp == "")
-				temp = processor.getString("javascript");
+				temp = processor.getString("javaScript");
 		}
 		this.jScript = temp;
 		this.image = processor.getString("image");
-		this.hotKey = processor.getString("hotkey");
-		this.fontName = processor.getString("fontname");
-		this.fontHeight = processor.getString("fontheight");
-		this.sortOrder = processor.getInt("sortorder");
+		this.hotKey = processor.getString("hotKey");
+		this.fontName = processor.getString("fontName");
+		this.fontHeight = processor.getString("fontHeight");
+		this.sortOrder = processor.getInt("sortOrder");
 
-		Color temp2 = processor.getColor("bgcolor1", false);
+		Color temp2 = processor.getColor("bgColor1", false);
 		if (temp2 == null)
 			temp2 = comonFunctions.getColor("white");
 		this.bgColor1 = temp2;
 
-		temp2 = processor.getColor("bgcolor2", false);
+		temp2 = processor.getColor("bgColor2", false);
 		if (temp2 == null)
 			temp2 = this.bgColor1;
 		this.bgColor2 = temp2;
 
-		temp2 = processor.getColor("fontcolor", false);
+		temp2 = processor.getColor("fontColor", false);
 		if (temp2 == null)
 			temp2 = comonFunctions.getColor("black");
 		this.fontColor = temp2;
 
-		temp = processor.getString("ifbefore");
+		temp = processor.getString("ifBefore");
 		if (temp == "")
 			this.ifBefore = null;
 		else
 			this.ifBefore = LocalTime.parse(temp);
 
-		temp = processor.getString("ifafter");
+		temp = processor.getString("ifAfter");
 		if (temp == "")
 			this.ifAfter = null;
 		else
@@ -155,39 +157,39 @@ public class Button  implements Comparable<Button>
 
 		this.disabled = processor.getBool("disabled");
 		this.id = processor.getString("id");
-		this.scriptVar = processor.getString("scriptvar");
-		this.setDefaultBtn(processor.getBool("default") || processor.getBool("defaultbtn") || processor.getBool("defaultbutton"));
+		this.scriptVar = processor.getString("scriptVar");
+		this.setDefaultBtn(processor.getBool("default") || processor.getBool("defaultBtn") || processor.getBool("defaultButton"));
 	}
 
-	protected static HashMap<String, HashParam> mapper = createMapper();
+	protected static Map<String, HashParam> mapper = createMapper();
 
-	protected static HashMap<String, HashParam> createMapper() {
-		HashMap<String, HashParam> temp = new HashMap<String, HashParam>();
+	protected static Map<String, HashParam> createMapper() {
+		Map<String, HashParam> temp = new CaseInsensitiveMap();
 		temp.put("target", new HashParam(""));
 		temp.put("text", new HashParam(""));
-		temp.put("ifnotset", new HashParam(""));
-		temp.put("ifset", new HashParam(""));
+		temp.put("ifNotSet", new HashParam(""));
+		temp.put("ifSet", new HashParam(""));
 		temp.put("set", new HashParam(""));
 		temp.put("unset", new HashParam(""));
-		temp.put("javascript", new HashParam(""));
-		temp.put("jscript", new HashParam(""));
+		temp.put("javaScript", new HashParam(""));
+		temp.put("jScript", new HashParam(""));
 		temp.put("script", new HashParam(""));
 		temp.put("image", new HashParam(""));
-		temp.put("hotkey", new HashParam(""));
-		temp.put("fontname", new HashParam(""));
-		temp.put("fontheight", new HashParam(""));
-		temp.put("sortorder", new HashParam(Type.INTEGER, 1));
-		temp.put("bgcolor1", new HashParam(Type.COLOR, null));
-		temp.put("bgcolor2", new HashParam(Type.COLOR, null));
-		temp.put("fontcolor", new HashParam(Type.COLOR, null));
-		temp.put("ifbefore", new HashParam(""));
-		temp.put("ifafter", new HashParam(""));
+		temp.put("hotKey", new HashParam(""));
+		temp.put("fontName", new HashParam(""));
+		temp.put("fontHeight", new HashParam(""));
+		temp.put("sortOrder", new HashParam(Type.INTEGER, 1));
+		temp.put("bgColor1", new HashParam(Type.COLOR, null));
+		temp.put("bgColor2", new HashParam(Type.COLOR, null));
+		temp.put("fontColor", new HashParam(Type.COLOR, null));
+		temp.put("ifBefore", new HashParam(""));
+		temp.put("ifAfter", new HashParam(""));
 		temp.put("disabled", new HashParam(Type.BOOLEAN, false));
 		temp.put("id", new HashParam(""));
-		temp.put("scriptvar", new HashParam(""));
+		temp.put("scriptVar", new HashParam(""));
 		temp.put("default", new HashParam(Type.BOOLEAN, false));
-		temp.put("defaultbtn", new HashParam(Type.BOOLEAN, false));
-		temp.put("defaultbutton", new HashParam(Type.BOOLEAN, false));
+		temp.put("defaultBtn", new HashParam(Type.BOOLEAN, false));
+		temp.put("defaultButton", new HashParam(Type.BOOLEAN, false));
 		return temp;
 	}
 	
