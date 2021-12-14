@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Display;
 import org.guideme.guideme.model.*;
+import org.mozilla.javascript.NativeObject;
 
 
 public class OverRide {
@@ -208,6 +209,37 @@ public class OverRide {
 			overRide.button.add(button);
 		}
 	}
+
+
+	/**
+	 * Adds a button to the page
+	 *
+	 * @param params Object containing the parameters with which to construct the button
+	 */
+	public void addButton(NativeObject params)
+	{
+		ButtonThread3 buttonThread = new ButtonThread3(params);
+		buttonThread.overRide = this;
+		Display.getDefault().syncExec(buttonThread);
+	}
+
+	private class ButtonThread3 implements Runnable
+	{
+		public NativeObject params;
+		public OverRide overRide;
+
+		public ButtonThread3(NativeObject params)
+		{
+			this.params = params;
+		}
+
+		public void run()
+		{
+			Button button = new Button(params);
+			overRide.button.add(button);
+		}
+	}
+
 	
 	/** @exclude */
 	public Button getButton(int i) {
