@@ -1341,9 +1341,13 @@ public class ComonFunctions{
 		return returnVal;
 		
 	}
-	
-	public org.eclipse.swt.graphics.Color getColor(String color) { 
-		org.eclipse.swt.graphics.Color swtColor = display.getSystemColor(SWT.COLOR_WHITE);
+
+	public org.eclipse.swt.graphics.Color getColor(String color) {
+		return getColor(color, display.getSystemColor(SWT.COLOR_WHITE));
+	}
+
+	public org.eclipse.swt.graphics.Color getColor(String color, org.eclipse.swt.graphics.Color stock) {
+		org.eclipse.swt.graphics.Color swtColor = stock;
 		switch (color) {
 		case "white":
 			swtColor = display.getSystemColor(SWT.COLOR_WHITE);
