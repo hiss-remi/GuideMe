@@ -11,7 +11,6 @@ import org.guideme.guideme.settings.AppSettings;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.settings.GuideSettings;
 import org.guideme.guideme.ui.MainShell;
-import org.mozilla.javascript.NativeObject;
 
 public class Guide {
 	/** @exclude */
@@ -995,13 +994,6 @@ public class Guide {
 		timCountDown.add(Calendar.MILLISECOND, timer.getTimerMSec());
 		timer.setTimerEnd(timCountDown);
 		mainshell.addTimer(timer);
-	}
-
-	public void addTimer(NativeObject obj) {
-		logger.debug("timer: " + obj.getClass().getName());
-		for (Object id: obj.getIds()) {
-			logger.debug(id.getClass().getName() + " " + id.toString() + ":" + obj.get(id.toString(), obj));
-		}
 	}
 
 	/**
