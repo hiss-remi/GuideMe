@@ -107,7 +107,13 @@ public class Button  implements Comparable<Button>
 	public Button(NativeObject params) {
 		HashCommandProcessor processor = new HashCommandProcessor(mapper);
 		processor.parse(params);
+		processParams(processor);
+	}
 
+	public Button() {
+	}
+
+	protected void processParams(HashCommandProcessor processor) {
 		this.target = processor.getString("target");
 		this.text = processor.getString("text");
 		this.ifNotSet = processor.getString("ifNotSet");
@@ -190,6 +196,12 @@ public class Button  implements Comparable<Button>
 		temp.put("default", new HashParam(Type.BOOLEAN, false));
 		temp.put("defaultBtn", new HashParam(Type.BOOLEAN, false));
 		temp.put("defaultButton", new HashParam(Type.BOOLEAN, false));
+
+		//GlobalButton's parameters are here to simplify the constructor situation.
+		//On a regular button, they just won't do anything.
+		//Unless actions are implemented that apply to Button as well...
+		temp.put("placement", new HashParam(HashParam.Type.ENUM, GlobalButton.Placement.class));
+		temp.put("action", new HashParam(HashParam.Type.ENUM, GlobalButton.Action.class));
 		return temp;
 	}
 	

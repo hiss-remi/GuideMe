@@ -104,4 +104,12 @@ public class HashCommandProcessor {
     }
 
     public Boolean getBool(String key) { return getBool(key, true); }
+
+    public Object getEnum(String key)
+    {
+        if (args.containsKey(key))
+            return args.get(key);
+        else
+            return null;
+    }
 }
