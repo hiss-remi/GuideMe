@@ -28,6 +28,10 @@ public class HashCommandProcessor {
             {
                 args.put(key, mapper.get(key).parse(input.get(key)));
             }
+            else
+            {
+                throw new IllegalArgumentException("HashCommandProcessor: " + key + " is not a valid parameter for this function.");
+            }
         }
     }
 
