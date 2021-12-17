@@ -14,7 +14,8 @@ public class HashParam {
         STRING,
         COLOR,
         RANGE, //A special case of string - used for timers that can randomize within a range.
-        BOOLEAN
+        BOOLEAN,
+        ENUM
     }
 
     private Type type;
@@ -57,11 +58,19 @@ public class HashParam {
                 return Context.jsToJava(arr.get(0), String.class) + ".." + Context.jsToJava(arr.get(1), String.class);
             } else
                 return Context.jsToJava(obj, String.class);
-        } else if (type == Type.BOOLEAN)
+        } else if (type == Type.BOOLEAN) {
             if (obj instanceof String)
                 return Boolean.parseBoolean((String) obj);
             else
                 return Context.jsToJava(obj, Boolean.class);
+        } else if (type == Type.ENUM) {
+            Class eclass = (Class) stock;
+            if (obj instanceof String)
+                return Enum.valueOf(eclass, (String) obj);
+            else
+                throw new IllegalArgumentException("HashParam parse error: " + obj.toString() +
+                        " is not a valid type for Enum " + eclass.getName());
+        }
         else
             //Should never happen, but if all the branches are not closed off the compiler will scream.
             throw new IllegalArgumentException("HashParam parse error: " + type + "is not supported.");

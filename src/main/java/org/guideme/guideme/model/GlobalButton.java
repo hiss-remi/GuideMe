@@ -1,5 +1,13 @@
 package org.guideme.guideme.model;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
+import org.guideme.guideme.util.HashCommandProcessor;
+import org.guideme.guideme.util.HashParam;
+import org.mozilla.javascript.NativeObject;
+
+import java.lang.reflect.GenericDeclaration;
+import java.util.Map;
+
 public class GlobalButton extends Button {
     private Placement placement = Placement.BOTTOM;
     private Action action = Action.NONE;
@@ -30,6 +38,18 @@ public class GlobalButton extends Button {
         super(target, text, ifSet, ifNotSet, set, unSet, jScript, image, hotKey, fontName, fontHeight, fontColor, bgColor1, bgColor2, sortOrder, ifAfter, ifBefore, disabled, id, scriptVar, defaultBtn);
         this.placement = placement;
         this.action = action;
+    }
+
+    public GlobalButton(NativeObject params) {
+        HashCommandProcessor processor = new HashCommandProcessor(mapper);
+        processor.parse(params);
+        processParams(processor);
+        Object temp = processor.getEnum("placement");
+        if (temp != null)
+            this.placement = (Placement) temp;
+        temp = processor.getEnum("action");
+        if (temp != null)
+            this.action = (Action) temp;
     }
 
     public Placement getPlacement() {
