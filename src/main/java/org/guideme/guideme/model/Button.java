@@ -387,7 +387,7 @@ public class Button  implements Comparable<Button>
 		return defaultBtn;
 	}
 
-
+	//TODO: This currently does nothing. Fix if possible.
 	public void setDefaultBtn(boolean defaultBtn) {
 		this.defaultBtn = defaultBtn;
 	}
