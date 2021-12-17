@@ -58,7 +58,10 @@ public class HashParam {
             } else
                 return Context.jsToJava(obj, String.class);
         } else if (type == Type.BOOLEAN)
-            return Context.jsToJava(obj, Boolean.class);
+            if (obj instanceof String)
+                return Boolean.parseBoolean((String) obj);
+            else
+                return Context.jsToJava(obj, Boolean.class);
         else
             //Should never happen, but if all the branches are not closed off the compiler will scream.
             throw new IllegalArgumentException("HashParam parse error: " + type + "is not supported.");
