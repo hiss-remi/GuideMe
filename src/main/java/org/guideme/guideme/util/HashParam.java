@@ -66,7 +66,7 @@ public class HashParam {
         } else if (type == Type.ENUM) {
             Class eclass = (Class) stock;
             if (obj instanceof String)
-                return Enum.valueOf(eclass, (String) obj);
+                return Enum.valueOf(eclass, ((String) obj).toUpperCase());
             else
                 throw new IllegalArgumentException("HashParam parse error: " + obj.toString() +
                         " is not a valid type for Enum " + eclass.getName());
