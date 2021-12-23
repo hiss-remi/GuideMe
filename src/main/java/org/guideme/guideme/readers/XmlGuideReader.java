@@ -581,7 +581,7 @@ public class XmlGuideReader {
 							}
 
 							GlobalButton button = new GlobalButton(btnId, strTarget, BtnText, ifSet, ifNotSet, Set, UnSet, javascript, image, hotKey, fontName, fontHeight, fontColor, bgColor1, bgColor2, sortOrder, ifAfter, ifBefore, disabled, scriptVar, defaultBtn, placement, action);
-							page.addGlobalButton(button);
+							page.addGlobalButtonOrder(button);
 							logger.trace("loadXML " + PresName + " Global Button " + btnId+ "|" + strTarget+ "|" + BtnText + "|" + ifSet+ "|" + ifNotSet+ "|" + Set+ "|" + UnSet + "|" + javascript + "|" + placement + "|" + action);
 						} catch (Exception e1) {
 							logger.error("loadXML " + PresName + " Global Button Exception " + e1.getLocalizedMessage(), e1);

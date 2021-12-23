@@ -363,6 +363,50 @@ public class OverRide {
 		Display.getDefault().syncExec(buttonThread);
 	}
 
+	/**
+	 * Hides a global button from the page
+	 *
+	 * @param id the id of the button
+	 */
+	public void hideGlobalButton(String id) {
+		GlobalButtonThread buttonThread = new GlobalButtonThread();
+		buttonThread.overRide = this;
+		buttonThread.id = id;
+		buttonThread.target = "";
+		buttonThread.text = "";
+		buttonThread.set = "";
+		buttonThread.unSet = "";
+		buttonThread.jScript = "";
+		buttonThread.image = "";
+		buttonThread.hotKey = "";
+		buttonThread.sortOrder = "";
+		buttonThread.placement = "";
+		buttonThread.action = GlobalButton.Action.HIDE;
+		Display.getDefault().syncExec(buttonThread);
+	}
+
+	/**
+	 * Shows a previously hidden global button
+	 *
+	 * @param id the id of the button
+	 */
+	public void showGlobalButton(String id) {
+		GlobalButtonThread buttonThread = new GlobalButtonThread();
+		buttonThread.overRide = this;
+		buttonThread.id = id;
+		buttonThread.target = "";
+		buttonThread.text = "";
+		buttonThread.set = "";
+		buttonThread.unSet = "";
+		buttonThread.jScript = "";
+		buttonThread.image = "";
+		buttonThread.hotKey = "";
+		buttonThread.sortOrder = "";
+		buttonThread.placement = "";
+		buttonThread.action = GlobalButton.Action.SHOW;
+		Display.getDefault().syncExec(buttonThread);
+	}
+
 	private class GlobalButtonThread implements Runnable
 	{
 		public OverRide overRide;
@@ -393,6 +437,50 @@ public class OverRide {
 
 			GlobalButton button = new GlobalButton(id, target, text, "", "", set, unSet, jScript, image, hotKey, iSortOrder, placement, action);
 			overRide.globalButton.removeIf(btn -> btn.getId().equals(id));
+			overRide.globalButton.add(button);
+		}
+	}
+
+	/**
+	 * Adds a global button to the page
+	 *
+	 * @param params Object containing the parameters with which to construct the button
+	 */
+	public void addGlobalButton(NativeObject params)
+	{
+		GlobalButtonThread2 buttonThread = new GlobalButtonThread2(params);
+		buttonThread.overRide = this;
+		buttonThread.action = GlobalButton.Action.ADD;
+		Display.getDefault().syncExec(buttonThread);
+	}
+
+	/**
+	 * Changes values on an existing global button
+	 *
+	 * @param params Object containing the parameters of the button to be changed
+	 */
+	public void changeGlobalButton(NativeObject params)
+	{
+		GlobalButtonThread2 buttonThread = new GlobalButtonThread2(params);
+		buttonThread.overRide = this;
+		buttonThread.action = GlobalButton.Action.CHANGE;
+		Display.getDefault().syncExec(buttonThread);
+	}
+
+	private class GlobalButtonThread2 implements Runnable
+	{
+		public NativeObject params;
+		public OverRide overRide;
+		public GlobalButton.Action action;
+
+		public GlobalButtonThread2(NativeObject params)
+		{
+			this.params = params;
+		}
+
+		public void run()
+		{
+			GlobalButton button = new GlobalButton(params, action);
 			overRide.globalButton.add(button);
 		}
 	}

@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Color;
 import org.mozilla.javascript.NativeObject;
 
 import java.util.Map;
+import java.util.Set;
 
 public class HashCommandProcessor {
 
@@ -33,6 +34,11 @@ public class HashCommandProcessor {
                 throw new IllegalArgumentException("HashCommandProcessor: " + key + " is not a valid parameter for this function.");
             }
         }
+    }
+
+    public Set<String> getKeys()
+    {
+        return args.keySet();
     }
 
     public String getString(String key, boolean useDefault)

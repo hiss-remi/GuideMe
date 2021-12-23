@@ -2,10 +2,11 @@ package org.guideme.guideme.model;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.collections.map.CaseInsensitiveMap;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.graphics.Color;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
@@ -13,7 +14,7 @@ import org.guideme.guideme.util.HashParam;
 import org.guideme.guideme.util.HashParam.*;
 import org.mozilla.javascript.NativeObject;
 
-public class Button  implements Comparable<Button>
+public class Button implements Comparable<Button>
 {
 	private String ifSet;
 	private String ifNotSet;
@@ -37,6 +38,8 @@ public class Button  implements Comparable<Button>
 	private ComonFunctions comonFunctions = ComonFunctions.getComonFunctions();
 	private String scriptVar;
 	private boolean defaultBtn; //button activated by enter
+	protected HashCommandProcessor changeParams;
+	private static Logger logger = LogManager.getLogger();
 
 	public Button (String target, String text)
 	{
@@ -114,6 +117,14 @@ public class Button  implements Comparable<Button>
 	}
 
 	protected void processParams(HashCommandProcessor processor) {
+		this.id = processor.getString("id");
+
+		//Premature optimization?
+		//if (isChangeOrder) {
+			changeParams = processor;
+		//	return;
+		//}
+
 		this.target = processor.getString("target");
 		this.text = processor.getString("text");
 		this.ifNotSet = processor.getString("ifNotSet");
@@ -162,9 +173,11 @@ public class Button  implements Comparable<Button>
 			this.ifAfter = LocalTime.parse(temp);
 
 		this.disabled = processor.getBool("disabled");
-		this.id = processor.getString("id");
+
 		this.scriptVar = processor.getString("scriptVar");
 		this.setDefaultBtn(processor.getBool("default") || processor.getBool("defaultBtn") || processor.getBool("defaultButton"));
+
+
 	}
 
 	protected static Map<String, HashParam> mapper = createMapper();
@@ -204,7 +217,97 @@ public class Button  implements Comparable<Button>
 		temp.put("action", new HashParam(HashParam.Type.ENUM, GlobalButton.Action.class));
 		return temp;
 	}
-	
+
+	public void merge(Button changeOrder)
+	{
+		//if (changeParams != null)
+			merge(changeOrder.changeParams);
+	}
+
+	protected void merge(HashCommandProcessor processor)
+	{
+		String temp;
+		//Seems like there ought to be a less verbose way to do things than this, but I couldn't find one that seemed reliable enough.
+		for (String key: processor.getKeys()) {
+			switch(key) {
+				case "target":
+					this.target = processor.getString("target");
+					break;
+				case "text":
+					this.text = processor.getString("text");
+					break;
+				case "ifnotset":
+					this.ifNotSet = processor.getString("ifNotSet");
+					break;
+				case "ifset":
+					this.ifSet = processor.getString("ifSet");
+					break;
+				case "set":
+					this.set = processor.getString("set");
+					break;
+				case "unset":
+					this.unSet = processor.getString("unset");
+					break;
+				case "jscript":
+					this.jScript = processor.getString("jScript");
+					break;
+				case "script":
+					this.jScript = processor.getString("script");
+					break;
+				case "javascript":
+					this.jScript = processor.getString("javascript");
+					break;
+				case "image":
+					this.image = processor.getString("image");
+					break;
+				case "hotkey":
+					this.hotKey = processor.getString("hotKey");
+					break;
+				case "fontname":
+					this.fontName = processor.getString("fontName");
+					break;
+				case "fontheight":
+					this.fontHeight = processor.getString("fontHeight");
+					break;
+				case "sortorder":
+					this.sortOrder = processor.getInt("sortOrder");
+					break;
+				case "bgcolor1":
+					this.bgColor1 = processor.getColor("bgColor1", false);
+					break;
+				case "bgcolor2":
+					this.bgColor2 = processor.getColor("bgColor2", false);
+					break;
+				case "fontcolor":
+					this.fontColor = processor.getColor("fontColor", false);
+					break;
+				case "ifbefore":
+					temp = processor.getString("ifBefore");
+					if (temp == "")
+						this.ifBefore = null;
+					else
+						this.ifBefore = LocalTime.parse(temp);
+					break;
+				case "ifafter":
+					temp = processor.getString("ifAfter");
+					if (temp == "")
+						this.ifAfter = null;
+					else
+						this.ifAfter = LocalTime.parse(temp);
+					break;
+				case "disabled":
+					this.disabled = processor.getBool("disabled");
+					break;
+				case "scriptvar":
+					this.scriptVar = processor.getString("scriptVar");
+					break;
+				//Don't do this, it breaks subclasses.
+				//default:
+				//	throw new IllegalArgumentException("Invalid key " + key + " for button merge.");
+			}
+		}
+	}
+
 	public void setUnSet(ArrayList<String> setList)
 	{
 		comonFunctions.SetFlags(this.set, setList);
