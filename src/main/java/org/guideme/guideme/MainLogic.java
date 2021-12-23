@@ -16,6 +16,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -28,6 +29,8 @@ import java.util.Iterator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.guideme.guideme.model.*;
+import org.guideme.guideme.model.Button;
+import org.guideme.guideme.model.Image;
 import org.guideme.guideme.readers.XmlGuideReader;
 import org.guideme.guideme.scripting.OverRide;
 import org.guideme.guideme.settings.AppSettings;
@@ -672,16 +675,16 @@ public class MainLogic {
 		GuideSettings guideSettings = guide.getSettings();
 		ArrayList<Button> button = new ArrayList<>();
 
-		// Move global buttons into page object.
+		// Move global button orders from overRide into page object.
 		for (int i1 = 0; i1 < overRide.globalButtonCount(); i1++) {
 			GlobalButton objGlobalButton = overRide.getGlobalButton(i1);
-			objCurrPage.addGlobalButton(objGlobalButton);
+			objCurrPage.addGlobalButtonOrder(objGlobalButton);
 		}
 		overRide.clearGlobalButtons();
 
 		// process global buttons on page
-		for (int i1 = 0; i1 < objCurrPage.getGlobalButtonCount(); i1++) {
-			GlobalButton objGlobalButton = objCurrPage.getGlobalButton(i1);
+		for (int i1 = 0; i1 < objCurrPage.getGlobalButtonOrderCount(); i1++) {
+			GlobalButton objGlobalButton = objCurrPage.getGlobalButtonOrder(i1);
 			switch (objGlobalButton.getAction()) {
 				case ADD:
 					guide.addGlobalButton(objGlobalButton.getId(), objGlobalButton);
@@ -689,10 +692,24 @@ public class MainLogic {
 				case REMOVE:
 					guide.removeGlobalButton(objGlobalButton.getId());
 					break;
+				case HIDE:
+					guide.getGlobalButton(objGlobalButton.getId()).setHidden(true);
+					break;
+				case SHOW:
+					guide.getGlobalButton(objGlobalButton.getId()).setHidden(false);
+					break;
+				case CHANGE:
+					GlobalButton temp = guide.getGlobalButton(objGlobalButton.getId());
+					temp.merge(objGlobalButton);
+					guide.addGlobalButton(objGlobalButton.getId(), temp);
+					break;
 				default:
 					logger.error("displayPage Global Button invalid action " + objGlobalButton.getAction());
 			}
 		}
+
+		//Once they are stored in Guide, they do not need to be reprocessed every time.
+		objCurrPage.clearGlobalButtonOrders();
 
 		// remove old buttons
 		mainShell.removeButtons();
@@ -700,7 +717,7 @@ public class MainLogic {
 		// add top placement global buttons
 		ArrayList<Button> globalTopButtons = new ArrayList<>();
 		for (GlobalButton globalButton : guide.getGlobalButtons()) {
-			if (globalButton.canShow(guide.getFlags()) && globalButton.getPlacement() == GlobalButton.Placement.TOP) {
+			if (globalButton.canShow(guide.getFlags()) && globalButton.getPlacement() == GlobalButton.Placement.TOP && !globalButton.isHidden()) {
 				globalTopButtons.add(globalButton);
 				debugShell.addOverrideButton(globalButton);
 			}
@@ -740,7 +757,7 @@ public class MainLogic {
 		// add bottom placement global buttons
 		ArrayList<Button> globalBottomButtons = new ArrayList<>();
 		for (GlobalButton globalButton : guide.getGlobalButtons()) {
-			if (globalButton.canShow(guide.getFlags()) && globalButton.getPlacement() == GlobalButton.Placement.BOTTOM) {
+			if (globalButton.canShow(guide.getFlags()) && globalButton.getPlacement() == GlobalButton.Placement.BOTTOM && !globalButton.isHidden()) {
 				globalBottomButtons.add(globalButton);
 				debugShell.addOverrideButton(globalButton);
 			}

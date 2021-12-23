@@ -11,6 +11,7 @@ import java.util.Map;
 public class GlobalButton extends Button {
     private Placement placement = Placement.BOTTOM;
     private Action action = Action.NONE;
+    private boolean hidden = false;
 
     public GlobalButton(String id, String target, String text) {
         super(target, text, "", "", "", "", "", "", "", "", "", "", "", "", 1, "", "", false, id, "", false);
@@ -40,7 +41,8 @@ public class GlobalButton extends Button {
         this.action = action;
     }
 
-    public GlobalButton(NativeObject params) {
+    public GlobalButton(NativeObject params, Action action) {
+        this.action = action;
         HashCommandProcessor processor = new HashCommandProcessor(mapper);
         processor.parse(params);
         processParams(processor);
@@ -50,6 +52,20 @@ public class GlobalButton extends Button {
         temp = processor.getEnum("action");
         if (temp != null)
             this.action = (Action) temp;
+    }
+
+    public void merge(GlobalButton changeOrder)
+    {
+        //if (changeParams != null)
+            merge(changeOrder.changeParams);
+    }
+
+    protected void merge(HashCommandProcessor processor)
+    {
+        super.merge(processor);
+        Object temp = processor.getEnum("placement");
+        if (temp != null)
+            this.placement = (Placement) temp;
     }
 
     public Placement getPlacement() {
@@ -68,6 +84,14 @@ public class GlobalButton extends Button {
         this.action = action;
     }
 
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
     public enum Placement {
         TOP,
         BOTTOM
@@ -76,6 +100,9 @@ public class GlobalButton extends Button {
     public enum Action {
         ADD,
         REMOVE,
+        CHANGE,
+        HIDE,
+        SHOW,
         NONE
     }
 }
