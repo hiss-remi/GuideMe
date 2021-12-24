@@ -9,6 +9,7 @@ import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
 import org.guideme.guideme.util.HashParam;
+import org.guideme.guideme.util.VeryInsensitiveMap;
 import org.mozilla.javascript.NativeObject;
 
 public class Timer {
@@ -103,7 +104,7 @@ public class Timer {
 	protected static Map<String, HashParam> mapper = createMapper();
 
 	protected static Map<String, HashParam> createMapper() {
-		Map<String, HashParam> temp = new CaseInsensitiveMap();
+		Map<String, HashParam> temp = new VeryInsensitiveMap();
 		temp.put("delay", new HashParam(HashParam.Type.RANGE, ""));
 		temp.put("javaScript", new HashParam(""));
 		temp.put("jScript", new HashParam(""));

@@ -12,6 +12,7 @@ import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
 import org.guideme.guideme.util.HashParam;
 import org.guideme.guideme.util.HashParam.*;
+import org.guideme.guideme.util.VeryInsensitiveMap;
 import org.mozilla.javascript.NativeObject;
 
 public class Button implements Comparable<Button>
@@ -183,7 +184,7 @@ public class Button implements Comparable<Button>
 	protected static Map<String, HashParam> mapper = createMapper();
 
 	protected static Map<String, HashParam> createMapper() {
-		Map<String, HashParam> temp = new CaseInsensitiveMap();
+		Map<String, HashParam> temp = new VeryInsensitiveMap();
 		temp.put("target", new HashParam(""));
 		temp.put("text", new HashParam(""));
 		temp.put("ifNotSet", new HashParam(""));

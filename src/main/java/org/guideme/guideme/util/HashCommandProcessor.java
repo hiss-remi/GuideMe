@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class HashCommandProcessor {
 
-    private Map<String, Object> args = new CaseInsensitiveMap();
+    private Map<String, Object> args = new VeryInsensitiveMap();
     private Map<String, HashParam> mapper;
     private static Logger logger = LogManager.getLogger();
 
