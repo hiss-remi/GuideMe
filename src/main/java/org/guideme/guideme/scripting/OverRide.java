@@ -646,7 +646,7 @@ public class OverRide {
 		buttonThread.defaultBtn = defaultBtn;
 		Display.getDefault().syncExec(buttonThread);	
 	}
-	
+
 	private class WebcamButtonThread2 implements Runnable
 	{
 		public OverRide overRide;
@@ -667,6 +667,34 @@ public class OverRide {
 		public void run()
 		{
 			WebcamButton button = new WebcamButton(type, file, target, text, "", "", set, unSet, jScript, image, hotKey, "", "", "", "", "", order, "", "", disabled, id, "", defaultBtn);
+			overRide.webcamButton.add(button);
+		}
+	}
+
+	/**
+	 * Adds a webcam button to the page
+	 *
+	 * @param params Object containing the parameters with which to construct the button
+	 */
+	public void addWebcamButton(NativeObject params) {
+		WebcamButtonThread3 buttonThread = new WebcamButtonThread3(params);
+		buttonThread.overRide = this;
+		Display.getDefault().syncExec(buttonThread);
+	}
+
+	private class WebcamButtonThread3 implements Runnable
+	{
+		public NativeObject params;
+		public OverRide overRide;
+
+		public WebcamButtonThread3(NativeObject params)
+		{
+			this.params = params;
+		}
+
+		public void run()
+		{
+			WebcamButton button = new WebcamButton(params);
 			overRide.webcamButton.add(button);
 		}
 	}
@@ -713,6 +741,17 @@ public class OverRide {
 	public void addRepeatTimer(String delay, String repeat, String jScript, String imageId, String text, String set, String unSet, String id) {
 		Timer timer = new Timer(delay, jScript, imageId, text, "", "", set, unSet, "", "", id);
 		timer.setRepeat(repeat);
+		this.timer.add(timer);
+	}
+
+	/**
+	 * Adds a timer to change various aspects of the screen / run a javascript function
+	 *
+	 * @param params Object containing the parameters with which to construct the timer
+	 */
+	public void addTimer(NativeObject params)
+	{
+		Timer timer = new Timer(params);
 		this.timer.add(timer);
 	}
 

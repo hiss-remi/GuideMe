@@ -1,5 +1,8 @@
 package org.guideme.guideme.model;
 
+import org.guideme.guideme.util.HashCommandProcessor;
+import org.mozilla.javascript.NativeObject;
+
 public class WebcamButton extends Button {
 	
 	private String _type;
@@ -14,6 +17,14 @@ public class WebcamButton extends Button {
 	{
 		super(target, text, ifSet, ifNotSet, set, unSet, jScript, image, hotKey, fontName, fontHeight, fontColor, bgColor1, bgColor2, sortOrder, ifAfter, ifBefore, disabled, id, scriptVar, defaultBtn);
 		SetValues(type, destination);
+	}
+
+	public WebcamButton(NativeObject params)
+	{
+		HashCommandProcessor processor = new HashCommandProcessor(mapper);
+		processor.parse(params);
+		processParams(processor);
+		SetValues(processor.getString("type"), processor.getString("file"));
 	}
 
 	private void SetValues(String type, String destination)
