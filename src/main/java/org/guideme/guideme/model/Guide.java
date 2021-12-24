@@ -632,8 +632,8 @@ public class Guide {
 	/**
 	 * Gets a random number
 	 * 
-	 * @param Min minimum value to be returned
-	 * @param Max maximum value to be returned
+	 * @param intMin minimum value to be returned
+	 * @param intMax maximum value to be returned
 	 * @return random a whole number between the two values (inclusive of the two values)
 	 */
 	public int getRandom(int intMin, int intMax) {
@@ -643,7 +643,7 @@ public class Guide {
 	/**
 	 * Gets a random number
 	 * 
-	 * @param Max maximum value to be returned
+	 * @param intMax maximum value to be returned
 	 * @return random a whole number between one and the value passed in inclusive of the value passsed in
 	 */
 	public int getRandom(int intMax) {
@@ -810,8 +810,7 @@ public class Guide {
 	/**
 	 * Replaces the complete html in the right (text) pane
 	 * 
-	 * @param brwsText html to over write the current html
-	 * @param overRideStyle CSS to style the html (will use the default if this is blank)
+	 * @param rightHtml html to over write the current html
 	 */
 	public void setRightHtml(String rightHtml) {
 		Display.getDefault().asyncExec(new Runnable() {
@@ -878,7 +877,7 @@ public class Guide {
 	 * Reads the contents of a file into an array of strings
 	 * each line will be read into a new element into the array 
 	 * 
-	 * @param fileName the path to the file
+	 * @param path the path to the file
 	 * @param contents a string array containing the lines for the file 
 	 */
 	public void jsWriteFileArray(String path, String[] contents) {
@@ -1142,10 +1141,10 @@ public class Guide {
 	 * scriptVar: set script variables e.g. audio=finished,stage=5
 	 * 
 	 * 
-	 * @param id the file name for the audio
+	 * @param audio the file name for the audio
 	 * @param startAt the start time for the audio hh:mm:ss
 	 * @param stopAt the stop time for audio hh:mm:ss 
-	 * @param repeat the number of times to repeat the audio
+	 * @param loops the number of times to repeat the audio
 	 * @param target the page to go to when the audio stops
 	 * @param jscript the Java Script function to run when the audio stops
 	 * @param scriptVar set script variables 
@@ -1183,10 +1182,10 @@ public class Guide {
 	 * scriptVar: set script variables e.g. audio=finished,stage=5
 	 * 
 	 * 
-	 * @param id the file name for the audio
+	 * @param audio the file name for the audio
 	 * @param startAt the start time for the audio hh:mm:ss
 	 * @param stopAt the stop time for audio hh:mm:ss 
-	 * @param repeat the number of times to repeat the audio
+	 * @param loops the number of times to repeat the audio
 	 * @param target the page to go to when the audio stops
 	 * @param jscript the Java Script function to run when the audio stops
 	 * @param scriptVar set script variables 
