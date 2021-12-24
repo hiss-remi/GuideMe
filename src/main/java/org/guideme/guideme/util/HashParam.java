@@ -53,10 +53,10 @@ public class HashParam {
             else
                 return comonFunctions.getColor(color.toLowerCase(), (Color) stock);
         } else if (type == Type.RANGE) {
-            if (obj instanceof NativeArray) {
-                NativeArray arr = (NativeArray) obj;
-                return Context.jsToJava(arr.get(0), String.class) + ".." + Context.jsToJava(arr.get(1), String.class);
-            } else
+            //if (obj instanceof NativeArray) {
+            //    NativeArray arr = (NativeArray) obj;
+            //    return Context.jsToJava(arr.get(0), String.class) + ".." + Context.jsToJava(arr.get(1), String.class);
+            //} else
                 return Context.jsToJava(obj, String.class);
         } else if (type == Type.BOOLEAN) {
             if (obj instanceof String)

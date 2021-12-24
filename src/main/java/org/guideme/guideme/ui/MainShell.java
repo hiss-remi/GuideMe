@@ -1832,7 +1832,11 @@ public class MainShell {
 								if (!javascript.equals("")) {
 									mainShell.runJscript(javascript, false);
 								}
-								mainLogic.displayPage(guide.getDelTarget(), false, guide, mainShell, appSettings, userSettings, guideSettings, debugShell);
+								String target = guide.getDelTarget();
+								if (!target.equals("")) {
+									logger.debug("delay target class: " + target.getClass());
+									mainLogic.displayPage(target, false, guide, mainShell, appSettings, userSettings, guideSettings, debugShell);
+								}
 							}
 							catch (Exception ex) {
 								logger.error(" shellTimer Delay Zero " + ex.getLocalizedMessage(), ex);

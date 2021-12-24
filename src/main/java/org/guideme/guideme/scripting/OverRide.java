@@ -808,6 +808,15 @@ public class OverRide {
 		this.delay = new Delay(target, delay, "", "", startWith, style, set, unSet, jScript, "", "", "");
 	}
 
+	/**
+	 * Add a delay / count down timer
+	 *
+	 * @param params Object containing the parameters for the delay
+	 */
+	public void setDelay(NativeObject params) {
+		this.delay = new Delay(params);
+	}
+
 	/** @exclude */
 	public Video getVideo() {
 		return video;
