@@ -2,8 +2,13 @@ package org.guideme.guideme.model;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.guideme.guideme.settings.ComonFunctions;
+import org.guideme.guideme.util.HashCommandProcessor;
+import org.guideme.guideme.util.HashParam;
+import org.guideme.guideme.util.VeryInsensitiveMap;
+import org.mozilla.javascript.NativeObject;
 
 public class Delay {
 	private String ifSet;
@@ -43,6 +48,45 @@ public class Delay {
 		}
 		this.scriptVar = scriptVar;
 
+	}
+
+	public Delay(NativeObject params) {
+		HashCommandProcessor processor = new HashCommandProcessor(mapper);
+		processor.parse(params);
+		this.target = processor.getString("target");
+		this.delay = processor.getString("delay");
+		this.startWith = processor.getString("startWith");
+		this.style = processor.getString("style");
+		this.set = processor.getString("set");
+		this.unSet = processor.getString("unset");
+		String temp = processor.getString("jScript");
+		if (temp == "")
+		{
+			temp = processor.getString("script");
+			if (temp == "")
+				temp = processor.getString("javaScript");
+		}
+		this.jScript = temp;
+		this.scriptVar = processor.getString("scriptVar");
+	}
+
+	protected static Map<String, HashParam> mapper = createMapper();
+
+	private static Map<String, HashParam> createMapper() {
+		Map<String, HashParam> temp = new VeryInsensitiveMap();
+		temp.put("target", new HashParam(""));
+		temp.put("delay", new HashParam(HashParam.Type.RANGE, ""));
+		temp.put("startWith", new HashParam(""));
+		temp.put("style", new HashParam("N"));
+		temp.put("set", new HashParam(""));
+		temp.put("unset", new HashParam(""));
+		temp.put("javaScript", new HashParam(""));
+		temp.put("jScript", new HashParam(""));
+		temp.put("script", new HashParam(""));
+		//ifset, ifnotset, ifbefore, and ifafter are not supported by javascript,
+		//because override can only set one delay, so their logic checking function would not work.
+		temp.put("scriptVar", new HashParam(""));
+		return temp;
 	}
 
 	public boolean canShow(ArrayList<String> setList) {
