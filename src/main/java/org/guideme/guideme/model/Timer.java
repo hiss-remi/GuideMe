@@ -101,7 +101,14 @@ public class Timer {
 		else
 			this.ifAfter = LocalTime.parse(temp);
 
+		this.id = processor.getString("id");
+
 		this.setRepeat(processor.getString("repeat"));
+		if (this.delay == null)
+			this.delay = this.repeat;
+
+		if (this.delay == null)
+			throw new IllegalArgumentException("addTimer must have a delay or a repeat parameter");
 	}
 
 	protected static Map<String, HashParam> mapper = createMapper();
