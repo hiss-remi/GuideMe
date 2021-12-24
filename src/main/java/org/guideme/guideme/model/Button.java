@@ -215,6 +215,10 @@ public class Button implements Comparable<Button>
 		//Unless actions are implemented that apply to Button as well...
 		temp.put("placement", new HashParam(HashParam.Type.ENUM, GlobalButton.Placement.class));
 		temp.put("action", new HashParam(HashParam.Type.ENUM, GlobalButton.Action.class));
+
+		//WebcamButton's parameters, same reason.
+		temp.put("type", new HashParam(""));
+		temp.put("file", new HashParam(""));
 		return temp;
 	}
 
