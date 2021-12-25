@@ -2,7 +2,7 @@ package org.guideme.guideme.ui;
 
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.binding.internal.libvlc_instance_t;
-import uk.co.caprica.vlcj.player.DefaultMediaPlayer;
+import uk.co.caprica.vlcj.player.base.MediaPlayer;
 
 /**
  * Implementation of a media player for SWT.
@@ -11,12 +11,12 @@ import uk.co.caprica.vlcj.player.DefaultMediaPlayer;
  * <p>
  * FIXME Ideally there should also be an SwtEmbeddedMediaPlayerComponent that encapsulates the video surface.
  */
-public class SwtEmbeddedMediaPlayer extends DefaultMediaPlayer {
+public class SwtEmbeddedMediaPlayer extends MediaPlayer {
 
     private CompositeVideoSurface videoSurface;
 
-    public SwtEmbeddedMediaPlayer(LibVlc libvlc, libvlc_instance_t instance) {
-        super(libvlc, instance);
+    public SwtEmbeddedMediaPlayer(libvlc_instance_t instance) {
+        super(instance);
     }
 
     public void setVideoSurface(CompositeVideoSurface videoSurface) {
@@ -24,7 +24,7 @@ public class SwtEmbeddedMediaPlayer extends DefaultMediaPlayer {
     }
 
     public void attachVideoSurface() {
-        videoSurface.attach(libvlc, this);
+        videoSurface.attach(this);
     }
 
     @Override

@@ -9,7 +9,8 @@ if [ "${XDG_SESSION_TYPE-}" = "wayland" ]; then
 	GDK_BACKEND="x11"
 	export GDK_BACKEND
 	# Disable X initialization in VLCJ to avoid SIGSEGV on wayland
-	JAVA_OPTS="${JAVA_OPTS} -DVLCJ_INITX=no"
+	# Hopefully this is no longer required with the VLCJ update
+	# JAVA_OPTS="${JAVA_OPTS} -DVLCJ_INITX=no"
 fi
 
 java ${JAVA_OPTS} \
