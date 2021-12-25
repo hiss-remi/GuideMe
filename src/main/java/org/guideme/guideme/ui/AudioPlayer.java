@@ -9,14 +9,14 @@ import org.eclipse.swt.widgets.Display;
 import org.guideme.guideme.settings.AppSettings;
 import org.guideme.guideme.settings.ComonFunctions;
 
-import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
-import uk.co.caprica.vlcj.player.MediaPlayer;
-import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
+import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
+import uk.co.caprica.vlcj.player.base.MediaPlayer;
+import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 
 public class AudioPlayer  implements Runnable {
 	//Class to play audio on a separate thread
 	private static Logger logger = LogManager.getLogger();
-	private AudioMediaPlayerComponent audioPlayerComponent = new AudioMediaPlayerComponent();
+	private AudioPlayerComponent audioPlayerComponent = new AudioPlayerComponent();
 	private MediaListener mediaListener = new MediaListener();
 	private MediaPlayer mediaPlayer;
 	private Boolean isPlaying = true;
@@ -63,8 +63,8 @@ public class AudioPlayer  implements Runnable {
 	public void audioStop() {
 		//stop the audio 
 		if (mediaPlayer != null) {
-			if (mediaPlayer.isPlaying()) {
-				mediaPlayer.stop();
+			if (mediaPlayer.status().isPlaying()) {
+				mediaPlayer.controls().stop();
 			}
 		}
 		synchronized(this){
@@ -75,15 +75,15 @@ public class AudioPlayer  implements Runnable {
 	}
 
 	public void audioPause() {
-		if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-			mediaPlayer.pause();
+		if (mediaPlayer != null && mediaPlayer.status().isPlaying()) {
+			mediaPlayer.controls().pause();
 		}
 		logger.trace("AudioPlayer Pause");
 	}
 
 	public void audioResume() {
-		if (mediaPlayer != null && mediaPlayer.isPlayable()) {
-			mediaPlayer.play();
+		if (mediaPlayer != null && mediaPlayer.status().isPlayable()) {
+			mediaPlayer.controls().play();
 		}
 		logger.trace("AudioPlayer Resume");
 	}
@@ -92,16 +92,16 @@ public class AudioPlayer  implements Runnable {
 		try {
 			//Play the audio set up by AudioPlayer
 			//use a media list to play loops
-			mediaPlayer = audioPlayerComponent.getMediaPlayer();
+			mediaPlayer = audioPlayerComponent.mediaPlayer();
 			if (this.outputDevice != null && !this.outputDevice.equals("")) {
-				mediaPlayer.setAudioOutputDevice(null, this.outputDevice);
+				mediaPlayer.audio().setOutputDevice(null, this.outputDevice);
 			}
-			mediaPlayer.addMediaPlayerEventListener(mediaListener);
-			mediaPlayer.setVolume(volume);
+			mediaPlayer.events().addMediaPlayerEventListener(mediaListener);
+			mediaPlayer.audio().setVolume(volume);
 			if (this.vlcArgs.isEmpty()) {
-				mediaPlayer.playMedia(audioFile);
+				mediaPlayer.media().play(audioFile);
 			} else {
-				mediaPlayer.playMedia(audioFile, vlcArgs.toArray(new String[vlcArgs.size()]));
+				mediaPlayer.media().play(audioFile, vlcArgs.toArray(new String[vlcArgs.size()]));
 			}
 			synchronized(this) {
 				while (isPlaying) {
@@ -114,51 +114,49 @@ public class AudioPlayer  implements Runnable {
 			logger.error("AudioPlayer run ", e);
 		}
 		if (mediaPlayer != null) {
-			if (mediaPlayer.isPlaying()) {
-				mediaPlayer.stop();
+			if (mediaPlayer.status().isPlaying()) {
+				mediaPlayer.controls().stop();
 			}
-			mediaPlayer.removeMediaPlayerEventListener(mediaListener);
+			mediaPlayer.events().removeMediaPlayerEventListener(mediaListener);
 			mediaPlayer.release();
 			mediaPlayer = null;
 		}
 		if (audioPlayerComponent != null) {
-			audioPlayerComponent.release(true);
+			audioPlayerComponent.release();
 			audioPlayerComponent = null;
 		}
 	}
 
 	public synchronized void setAudioDevice(String device)
 	{
-		mediaPlayer.setAudioOutputDevice(null, device);
+		mediaPlayer.audio().setOutputDevice(null, device);
 	}
 
 
 	class MediaListener extends MediaPlayerEventAdapter {
 
 		@Override
-		public void mediaStateChanged(MediaPlayer mediaPlayer, int newState) {
-			super.mediaStateChanged(mediaPlayer, newState);
-			logger.debug("New State " + newState);
-			Display display = Display.getDefault();
+		public void finished(MediaPlayer mediaPlayer)
+		{
+			super.finished(mediaPlayer);
+			logger.debug("Media finished");
+
 			//listener to handle displaying a new page when the audio ends
-			if ((newState==6) && isPlaying){
-				if (!target.equals(""))  {
-					//run on the main UI thread
-					display.syncExec(
-							new Runnable() {
-								public void run(){
-									mainShell.runJscript(jscript, false);
-									mainShell.displayPage(target);
-								}
-							});											
-				}
-				ComonFunctions comonFunctions = ComonFunctions.getComonFunctions();
-				comonFunctions.processSrciptVars(scriptVar, mainShell.getGuideSettings());
-				isPlaying = false;
+			if (!target.equals(""))  {
+				//run on the main UI thread
+				Display display = Display.getDefault();
+				display.syncExec(
+						new Runnable() {
+							public void run(){
+								mainShell.runJscript(jscript, false);
+								mainShell.displayPage(target);
+							}
+						});
+				display = null;
 			}
-			display = null;
+			ComonFunctions comonFunctions = ComonFunctions.getComonFunctions();
+			comonFunctions.processSrciptVars(scriptVar, mainShell.getGuideSettings());
+			isPlaying = false;
 		}
-
 	}
-
 }

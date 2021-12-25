@@ -1,8 +1,7 @@
 package org.guideme.guideme.ui;
 
 import org.eclipse.swt.widgets.Composite;
-import uk.co.caprica.vlcj.binding.LibVlc;
-import uk.co.caprica.vlcj.player.MediaPlayer;
+import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.VideoSurface;
 import uk.co.caprica.vlcj.player.embedded.videosurface.VideoSurfaceAdapter;
 
@@ -27,8 +26,8 @@ public class CompositeVideoSurface extends VideoSurface {
     }
 
     @Override
-    public void attach(LibVlc libvlc, MediaPlayer mediaPlayer) {
-        videoSurfaceAdapter.attach(libvlc, mediaPlayer, compositeHandle);
+    public void attach(MediaPlayer mediaPlayer) {
+        videoSurfaceAdapter.attach(mediaPlayer, compositeHandle);
     }
 
     /**

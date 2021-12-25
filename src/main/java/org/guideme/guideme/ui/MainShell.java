@@ -73,17 +73,14 @@ import com.github.sarxos.webcam.WebcamPanel;
 
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.binding.internal.libvlc_instance_t;
-import uk.co.caprica.vlcj.component.AudioMediaPlayerComponent;
-import uk.co.caprica.vlcj.player.AudioDevice;
-import uk.co.caprica.vlcj.player.MediaPlayer;
-import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
-import uk.co.caprica.vlcj.player.MediaPlayerFactory;
+import uk.co.caprica.vlcj.player.base.AudioDevice;
+import uk.co.caprica.vlcj.player.base.MediaPlayer;
+import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
+import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
+import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 import uk.co.caprica.vlcj.player.embedded.videosurface.VideoSurfaceAdapter;
-import uk.co.caprica.vlcj.player.embedded.videosurface.linux.LinuxVideoSurfaceAdapter;
-import uk.co.caprica.vlcj.player.embedded.videosurface.mac.MacVideoSurfaceAdapter;
-import uk.co.caprica.vlcj.player.embedded.videosurface.windows.WindowsVideoSurfaceAdapter;
-import uk.co.caprica.vlcj.runtime.RuntimeUtil;
+import uk.co.caprica.vlcj.player.embedded.videosurface.*;
 
 public class MainShell {
 	/*
@@ -458,17 +455,16 @@ public class MainShell {
 	
 					mediaPlayer.addMediaPlayerEventListener(new MediaListener());
 					*/
+
+					libvlc_instance_t instance = LibVlc.libvlc_new(0, null);
 					
-					LibVlc libvlc = LibVlc.INSTANCE;
-					libvlc_instance_t instance = libvlc.libvlc_new(0, null);
-					
-					mediaPlayer = new SwtEmbeddedMediaPlayer(libvlc, instance);
+					mediaPlayer = new SwtEmbeddedMediaPlayer(instance);
 					mediaPlayer.setVideoSurface(new CompositeVideoSurface(mediaPanel, getVideoSurfaceAdapter()));
-					mediaPlayer.addMediaPlayerEventListener(new MediaListener());
+					mediaPlayer.events().addMediaPlayerEventListener(new MediaListener());
 
 					String videoOutputDevice = appSettings.getVideoDevice();
 					if (videoOutputDevice != null && !videoOutputDevice.equals("")) {
-						mediaPlayer.setAudioOutputDevice(null, appSettings.getVideoDevice());
+						mediaPlayer.audio().setOutputDevice(null, appSettings.getVideoDevice());
 					}
 				}
 				catch (Exception vlcex) {
@@ -683,8 +679,8 @@ public class MainShell {
 			boolean userDeviceVideoAvailable = false;
 			boolean userDeviceOneAvailable = false;
 			boolean userDeviceTwoAvailable = false;
-			AudioMediaPlayerComponent mediaPlayerComponent = new AudioMediaPlayerComponent();
-			List<AudioDevice> outputs = mediaPlayerComponent.getMediaPlayer().getAudioOutputDevices();
+			AudioPlayerComponent mediaPlayerComponent = new AudioPlayerComponent();
+			List<AudioDevice> outputs = mediaPlayerComponent.mediaPlayer().audio().outputDevices();
 			for (AudioDevice device : outputs) {
 				boolean userDeviceVideo = device.getDeviceId().equals(appSettings.getVideoDevice());
 				boolean userDeviceOne = device.getDeviceId().equals(appSettings.getAudioOneDevice());
@@ -1079,7 +1075,7 @@ public class MainShell {
 		@Override
 		public void run() {
 			try {
-				mediaPlayerThread.stop();
+				mediaPlayerThread.controls().stop();
 				mediaPlayerThread.release();
 				mediaPlayerFactoryThread.release();
 				logger.trace("VideoRelease Exit");
@@ -1126,7 +1122,7 @@ public class MainShell {
 		//Video has finished
 		@Override
 		public void finished(MediaPlayer mediaPlayer) {
-			logger.debug("MediaListener finished " + mediaPlayer.mrl());
+			logger.debug("MediaListener finished " + mediaPlayer.media().info().mrl());
 			super.finished(mediaPlayer);
 			try {
 				if (!videoTarget.equals(""))  {
@@ -1380,7 +1376,7 @@ public class MainShell {
 				String newOutputDevice = e.widget.getData("device-id").toString();
 				appSettings.setVideoDevice(newOutputDevice);
 				if (newOutputDevice != null) {
-					mediaPlayer.setAudioOutputDevice(null, newOutputDevice);
+					mediaPlayer.audio().setOutputDevice(null, newOutputDevice);
 				}
 			}
 		}
@@ -2253,10 +2249,11 @@ public class MainShell {
 			try {
 				logger.debug("MainShell VideoPlay new Thread " + video);
 
-				mediaPlayer.setVolume(volume);
-				mediaPlayer.setPlaySubItems(true);
+				mediaPlayer.audio().setVolume(volume);
+				//Not required...hopefully.
+				//mediaPlayer.setPlaySubItems(true);
 				if (this.vlcArgs.isEmpty()) {
-					mediaPlayer.playMedia(video);
+					mediaPlayer.media().play(video);
 				} else {
 					myDisplay.syncExec(() -> {
 						mediaPanel.setVisible(true);
@@ -2264,7 +2261,7 @@ public class MainShell {
 						imageLabel.setVisible(false);
 						leftFrame.layout(true);
 					});
-					mediaPlayer.playMedia(video, vlcArgs.toArray(new String[vlcArgs.size()]));
+					mediaPlayer.media().play(video, vlcArgs.toArray(new String[vlcArgs.size()]));
 						//run on the main UI thread
 				}
 			} catch (Exception e) {
@@ -2973,8 +2970,8 @@ public class MainShell {
 					videoLoops = 0;
 					videoTarget = "";
 					videoPlay = false;
-					logger.debug("MainShell stopVideo " + mediaPlayer.mrl());
-					if (mediaPlayer.mrl() != null && videoPlayed)
+					logger.debug("MainShell stopVideo " + mediaPlayer.media().info().mrl());
+					if (mediaPlayer.media().info().mrl() != null && videoPlayed)
 					{
 						VideoStop videoStop = new VideoStop();
 						videoStop.setMediaPlayer(mediaPlayer, shellClosing);
@@ -3006,9 +3003,9 @@ public class MainShell {
 		@Override
 		public void run() {
 			try {
-				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-					logger.debug("MainShell VideoStop run: Stopping media player " + mediaPlayer.mrl());
-					mediaPlayer.pause();
+				if (mediaPlayer != null && mediaPlayer.status().isPlaying()) {
+					logger.debug("MainShell VideoStop run: Stopping media player " + mediaPlayer.media().info().mrl());
+					mediaPlayer.controls().pause();
 					if (shellClosing)
 					{
 						mediaPlayer.release();
@@ -3042,8 +3039,8 @@ public class MainShell {
 		if (audioPlayer2 != null) {
 			audioPlayer2.audioPause();
 		}
-		if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-			mediaPlayer.pause();
+		if (mediaPlayer != null && mediaPlayer.status().isPlaying()) {
+			mediaPlayer.controls().pause();
 		}
 		if (metronome != null) {
 			metronome.metronomePause();
@@ -3073,8 +3070,8 @@ public class MainShell {
 		if (audioPlayer2 != null) {
 			audioPlayer2.audioResume();
 		}
-		if (mediaPlayer != null && mediaPlayer.isPlayable()) {
-			mediaPlayer.play();
+		if (mediaPlayer != null && mediaPlayer.status().isPlayable()) {
+			mediaPlayer.controls().play();
 		}
 		if (metronome != null && metronome.isPaused()) {
 			metronome.metronomeResume();
@@ -3205,20 +3202,7 @@ public class MainShell {
 
 
     private static VideoSurfaceAdapter getVideoSurfaceAdapter() {
-        VideoSurfaceAdapter videoSurfaceAdapter;
-        if(RuntimeUtil.isNix()) {
-            videoSurfaceAdapter = new LinuxVideoSurfaceAdapter();
-        }
-        else if(RuntimeUtil.isWindows()) {
-            videoSurfaceAdapter = new WindowsVideoSurfaceAdapter();
-        }
-        else if(RuntimeUtil.isMac()) {
-            videoSurfaceAdapter = new MacVideoSurfaceAdapter();
-        }
-        else {
-            throw new RuntimeException("Unable to create a media player - failed to detect a supported operating system");
-        }
-        return videoSurfaceAdapter;
+		return VideoSurfaceAdapters.getVideoSurfaceAdapter();
     }
 
 	public void setGuideSettings(GuideSettings guideSettings) {
