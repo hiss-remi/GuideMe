@@ -812,9 +812,13 @@ public class OverRide {
 	 * Add a delay / count down timer
 	 *
 	 * @param params Object containing the parameters for the delay
+	 *               ifSet, ifNotSet, ifBefore, and ifAfter are supported; only
+	 *               a delay that passes those checks will overwrite the current one
 	 */
 	public void setDelay(NativeObject params) {
-		this.delay = new Delay(params);
+		Delay temp = new Delay(params);
+		if (temp.canShow(Guide.getGuide().getFlags()))
+			this.delay = temp;
 	}
 
 	/** @exclude */
