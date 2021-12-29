@@ -1,11 +1,17 @@
 package org.guideme.guideme.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.graphics.Color;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
 
+import java.util.List;
+
 public class HashParam {
+
+    private static Logger logger = LogManager.getLogger();
 
     public enum Type {
         INTEGER,
@@ -53,10 +59,11 @@ public class HashParam {
             else
                 return comonFunctions.getColor(color.toLowerCase(), (Color) stock);
         } else if (type == Type.RANGE) {
-            //if (obj instanceof NativeArray) {
-            //    NativeArray arr = (NativeArray) obj;
-            //    return Context.jsToJava(arr.get(0), String.class) + ".." + Context.jsToJava(arr.get(1), String.class);
-            //} else
+            if (obj instanceof List) {
+                List<Object> arr = (List<Object>) obj;
+                String temp =  "(" + Context.jsToJava(arr.get(0), String.class) + ".." + Context.jsToJava(arr.get(1), String.class) + ")";
+                return temp;
+            } else
                 return Context.jsToJava(obj, String.class);
         } else if (type == Type.BOOLEAN) {
             if (obj instanceof String)
