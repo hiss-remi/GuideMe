@@ -68,6 +68,21 @@ public class Delay {
 		}
 		this.jScript = temp;
 		this.scriptVar = processor.getString("scriptVar");
+
+		temp = processor.getString("ifBefore");
+		if (temp == "")
+			this.ifBefore = null;
+		else
+			this.ifBefore = LocalTime.parse(temp);
+
+		temp = processor.getString("ifAfter");
+		if (temp == "")
+			this.ifAfter = null;
+		else
+			this.ifAfter = LocalTime.parse(temp);
+
+		this.ifNotSet = processor.getString("ifNotSet");
+		this.ifSet = processor.getString("ifSet");
 	}
 
 	protected static Map<String, HashParam> mapper = createMapper();
@@ -83,8 +98,10 @@ public class Delay {
 		temp.put("javaScript", new HashParam(""));
 		temp.put("jScript", new HashParam(""));
 		temp.put("script", new HashParam(""));
-		//ifset, ifnotset, ifbefore, and ifafter are not supported by javascript,
-		//because override can only set one delay, so their logic checking function would not work.
+		temp.put("ifNotSet", new HashParam(""));
+		temp.put("ifSet", new HashParam(""));
+		temp.put("ifBefore", new HashParam(""));
+		temp.put("ifAfter", new HashParam(""));
 		temp.put("scriptVar", new HashParam(""));
 		return temp;
 	}
