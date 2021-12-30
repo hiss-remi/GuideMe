@@ -873,6 +873,12 @@ public class OverRide {
 		this.video = new Video(id, startAt, stopAt, target, "", "", set, unSet, repeat, jscript, "", "", "", volume);
 	}
 
+	public void setVideo(NativeObject params) {
+		Video temp = new Video(params);
+		if (temp.canShow(guide.getFlags()))
+				this.video = temp;
+	}
+
 	/** @exclude */
 	public Webcam getWebcam() {
 		return webcam;

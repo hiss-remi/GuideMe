@@ -385,7 +385,7 @@ public class ComonFunctions{
 	public int getMilisecFromTime(String iTime) {
 		int intPos1;
 		int intPos2;
-		String strHour;
+		String strHour = "0";
 		String strMinute;
 		String strSecond;
 		int intTime = 0;
@@ -398,10 +398,18 @@ public class ComonFunctions{
 					strHour = iTime.substring(0, intPos1);
 					strMinute = iTime.substring(intPos1 + 1, intPos2);
 					strSecond = iTime.substring(intPos2 + 1, iTime.length());
-					intTime = Integer.parseInt(strSecond) * 1000;
-					intTime = intTime + Integer.parseInt(strMinute) * 1000 * 60;
-					intTime = intTime + Integer.parseInt(strHour) * 1000 * 60 * 60;
+
 				}
+				else {
+					strMinute = iTime.substring(0, intPos1);
+					strSecond = iTime.substring(intPos1 + 1);
+				}
+				intTime = Integer.parseInt(strSecond) * 1000;
+				intTime = intTime + Integer.parseInt(strMinute) * 1000 * 60;
+				intTime = intTime + Integer.parseInt(strHour) * 1000 * 60 * 60;
+			}
+			else {
+				intTime = Integer.parseInt(iTime) * 1000;
 			}
 		} catch (Exception e) {
 			logger.error(e.getLocalizedMessage(),e);
