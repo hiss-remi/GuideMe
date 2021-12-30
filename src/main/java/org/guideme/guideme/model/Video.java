@@ -2,8 +2,14 @@ package org.guideme.guideme.model;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.guideme.guideme.settings.ComonFunctions;
+import org.guideme.guideme.util.HashCommandProcessor;
+import org.guideme.guideme.util.HashParam;
+import org.guideme.guideme.util.HashParam.Type;
+import org.guideme.guideme.util.VeryInsensitiveMap;
+import org.mozilla.javascript.NativeObject;
 
 public class Video
 {
@@ -48,6 +54,70 @@ public class Video
 		this.scriptVar = scriptVar;
 		this.volume = volume;
 
+	}
+
+	public Video(NativeObject params)
+	{
+		HashCommandProcessor processor = new HashCommandProcessor(mapper);
+		processor.parse(params);
+		this.id = processor.getString("id");
+		this.startAt = processor.getString("startAt");
+		this.stopAt = processor.getString("stopAt");
+		this.target = processor.getString("target");
+		this.ifNotSet = processor.getString("ifNotSet");
+		this.ifSet = processor.getString("ifSet");
+		this.set = processor.getString("set");
+		this.unSet = processor.getString("unset");
+		this.repeat = processor.getString("repeat");
+		if (this.repeat == "")
+			this.repeat = processor.getString("loops");
+		String temp = processor.getString("jScript");
+		if (temp == "")
+		{
+			temp = processor.getString("script");
+			if (temp == "")
+				temp = processor.getString("javaScript");
+		}
+		this.jscript = temp;
+
+		temp = processor.getString("ifBefore");
+		if (temp == "")
+			this.ifBefore = null;
+		else
+			this.ifBefore = LocalTime.parse(temp);
+
+		temp = processor.getString("ifAfter");
+		if (temp == "")
+			this.ifAfter = null;
+		else
+			this.ifAfter = LocalTime.parse(temp);
+
+		this.scriptVar = processor.getString("scriptVar");
+		this.volume = processor.getInt("volume");
+	}
+
+	private static Map<String, HashParam> mapper = createMapper();
+
+	private static Map<String, HashParam> createMapper() {
+		Map<String, HashParam> temp = new VeryInsensitiveMap();
+		temp.put("id", new HashParam(""));
+		temp.put("startAt", new HashParam(""));
+		temp.put("stopAt", new HashParam(""));
+		temp.put("target", new HashParam(""));
+		temp.put("ifNotSet", new HashParam(""));
+		temp.put("ifSet", new HashParam(""));
+		temp.put("set", new HashParam(""));
+		temp.put("unset", new HashParam(""));
+		temp.put("repeat", new HashParam(""));
+		temp.put("loops", new HashParam(""));
+		temp.put("javaScript", new HashParam(""));
+		temp.put("jScript", new HashParam(""));
+		temp.put("script", new HashParam(""));
+		temp.put("ifBefore", new HashParam(""));
+		temp.put("ifAfter", new HashParam(""));
+		temp.put("scriptVar", new HashParam(""));
+		temp.put("volume", new HashParam(Type.INTEGER, 100));
+		return temp;
 	}
 
 	public String getId() {
