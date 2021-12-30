@@ -44,6 +44,8 @@ public class OverRide {
 	private String rightCss = "";
 	/** @exclude */
 	private String leftCss = "";
+	/** @hidden */
+	private Guide guide = Guide.getGuide();
 
 	/**
 	 * Adds a button to the page
@@ -799,7 +801,7 @@ public class OverRide {
 	 */
 	public void setDelay(NativeObject params) {
 		Delay temp = new Delay(params);
-		if (temp.canShow(Guide.getGuide().getFlags()))
+		if (temp.canShow(guide.getFlags()))
 			this.delay = temp;
 	}
 

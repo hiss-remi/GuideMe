@@ -1,12 +1,8 @@
 package org.guideme.guideme.model;
 
-import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.guideme.guideme.util.HashCommandProcessor;
 import org.guideme.guideme.util.HashParam;
 import org.mozilla.javascript.NativeObject;
-
-import java.lang.reflect.GenericDeclaration;
-import java.util.Map;
 
 public class GlobalButton extends Button {
     private Placement placement = Placement.BOTTOM;

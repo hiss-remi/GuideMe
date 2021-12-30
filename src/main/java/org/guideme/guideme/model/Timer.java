@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 
-import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
 import org.guideme.guideme.util.HashParam;
