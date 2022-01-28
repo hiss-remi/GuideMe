@@ -131,14 +131,7 @@ public class Button implements Comparable<Button>
 		this.ifSet = processor.getString("ifSet");
 		this.set = processor.getString("set");
 		this.unSet = processor.getString("unset");
-		String temp = processor.getString("jScript");
-		if (temp == "")
-		{
-			temp = processor.getString("script");
-			if (temp == "")
-				temp = processor.getString("javaScript");
-		}
-		this.jScript = temp;
+		this.jScript = processor.getScript();
 		this.image = processor.getString("image");
 		this.hotKey = processor.getString("hotKey");
 		this.fontName = processor.getString("fontName");
