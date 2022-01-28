@@ -71,14 +71,7 @@ public class Video
 		this.repeat = processor.getString("repeat");
 		if (this.repeat == "")
 			this.repeat = processor.getString("loops");
-		String temp = processor.getString("jScript");
-		if (temp == "")
-		{
-			temp = processor.getString("script");
-			if (temp == "")
-				temp = processor.getString("javaScript");
-		}
-		this.jscript = temp;
+		this.jscript = processor.getScript();
 
 		this.ifBefore = processor.getTime("ifBefore");
 		this.ifAfter = processor.getTime("ifAfter");

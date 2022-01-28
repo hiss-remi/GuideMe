@@ -80,14 +80,7 @@ public class Timer {
 		this.set = processor.getString("set");
 		this.unSet = processor.getString("unset");
 
-		String temp = processor.getString("jScript");
-		if (temp == "")
-		{
-			temp = processor.getString("script");
-			if (temp == "")
-				temp = processor.getString("javaScript");
-		}
-		this.jScript = temp;
+		this.jScript = processor.getScript();
 
 		this.ifBefore = processor.getTime("ifBefore");
 		this.ifAfter = processor.getTime("ifAfter");

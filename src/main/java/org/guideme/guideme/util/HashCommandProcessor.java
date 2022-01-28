@@ -126,4 +126,16 @@ public class HashCommandProcessor {
         else
             return null;
     }
+
+    public String getScript()
+    {
+        if (args.containsKey("jScript"))
+            return (String) args.get("jScript");
+        else if (args.containsKey("script"))
+            return (String) args.get("script");
+        else if (args.containsKey("javaScript"))
+            return (String) args.get("javaScript");
+        else
+            return "";
+    }
 }
