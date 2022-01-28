@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.graphics.Color;
 import org.mozilla.javascript.NativeObject;
 
+import java.time.LocalTime;
 import java.util.Map;
 import java.util.Set;
 
@@ -114,6 +115,14 @@ public class HashCommandProcessor {
     {
         if (args.containsKey(key))
             return args.get(key);
+        else
+            return null;
+    }
+
+    public LocalTime getTime(String key)
+    {
+        if (args.containsKey(key))
+            return (LocalTime) args.get(key);
         else
             return null;
     }

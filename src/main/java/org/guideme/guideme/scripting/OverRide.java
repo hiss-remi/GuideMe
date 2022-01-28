@@ -873,6 +873,11 @@ public class OverRide {
 		this.video = new Video(id, startAt, stopAt, target, "", "", set, unSet, repeat, jscript, "", "", "", volume);
 	}
 
+	/**
+	 * Play a video
+	 *
+	 * @param params Object containing the parameters for the video
+	 */
 	public void setVideo(NativeObject params) {
 		Video temp = new Video(params);
 		if (temp.canShow(guide.getFlags()))

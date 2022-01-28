@@ -7,6 +7,7 @@ import java.util.Map;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
 import org.guideme.guideme.util.HashParam;
+import org.guideme.guideme.util.HashParam.*;
 import org.guideme.guideme.util.VeryInsensitiveMap;
 import org.mozilla.javascript.NativeObject;
 
@@ -69,17 +70,8 @@ public class Delay {
 		this.jScript = temp;
 		this.scriptVar = processor.getString("scriptVar");
 
-		temp = processor.getString("ifBefore");
-		if (temp == "")
-			this.ifBefore = null;
-		else
-			this.ifBefore = LocalTime.parse(temp);
-
-		temp = processor.getString("ifAfter");
-		if (temp == "")
-			this.ifAfter = null;
-		else
-			this.ifAfter = LocalTime.parse(temp);
+		this.ifBefore = processor.getTime("ifBefore");
+		this.ifAfter = processor.getTime("ifAfter");
 
 		this.ifNotSet = processor.getString("ifNotSet");
 		this.ifSet = processor.getString("ifSet");
@@ -90,7 +82,7 @@ public class Delay {
 	private static Map<String, HashParam> createMapper() {
 		Map<String, HashParam> temp = new VeryInsensitiveMap();
 		temp.put("target", new HashParam(""));
-		temp.put("delay", new HashParam(HashParam.Type.RANGE, ""));
+		temp.put("delay", new HashParam(Type.RANGE, ""));
 		temp.put("startWith", new HashParam(""));
 		temp.put("style", new HashParam("N"));
 		temp.put("set", new HashParam(""));
@@ -100,8 +92,8 @@ public class Delay {
 		temp.put("script", new HashParam(""));
 		temp.put("ifNotSet", new HashParam(""));
 		temp.put("ifSet", new HashParam(""));
-		temp.put("ifBefore", new HashParam(""));
-		temp.put("ifAfter", new HashParam(""));
+		temp.put("ifBefore", new HashParam(Type.TIME, null));
+		temp.put("ifAfter", new HashParam(Type.TIME, null));
 		temp.put("scriptVar", new HashParam(""));
 		return temp;
 	}
