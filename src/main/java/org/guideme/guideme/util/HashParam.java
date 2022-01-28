@@ -7,6 +7,7 @@ import org.guideme.guideme.settings.ComonFunctions;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeArray;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class HashParam {
@@ -21,7 +22,8 @@ public class HashParam {
         COLOR,
         RANGE, //A special case of string - used for timers that can randomize within a range.
         BOOLEAN,
-        ENUM
+        ENUM,
+        TIME
     }
 
     private Type type;
@@ -77,7 +79,14 @@ public class HashParam {
             else
                 throw new IllegalArgumentException("HashParam parse error: " + obj.toString() +
                         " is not a valid type for Enum " + eclass.getName());
+        } else if (type == Type.TIME) {
+            String temp = (String) obj;
+            if (temp == "")
+                return  null;
+            else
+                return LocalTime.parse(temp);
         }
+
         else
             //Should never happen, but if all the branches are not closed off the compiler will scream.
             throw new IllegalArgumentException("HashParam parse error: " + type + "is not supported.");

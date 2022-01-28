@@ -160,17 +160,8 @@ public class Button implements Comparable<Button>
 			temp2 = comonFunctions.getColor("black");
 		this.fontColor = temp2;
 
-		temp = processor.getString("ifBefore");
-		if (temp == "")
-			this.ifBefore = null;
-		else
-			this.ifBefore = LocalTime.parse(temp);
-
-		temp = processor.getString("ifAfter");
-		if (temp == "")
-			this.ifAfter = null;
-		else
-			this.ifAfter = LocalTime.parse(temp);
+		this.ifBefore = processor.getTime("ifBefore");
+		this.ifAfter = processor.getTime("ifAfter");
 
 		this.disabled = processor.getBool("disabled");
 
@@ -201,8 +192,8 @@ public class Button implements Comparable<Button>
 		temp.put("bgColor1", new HashParam(Type.COLOR, null));
 		temp.put("bgColor2", new HashParam(Type.COLOR, null));
 		temp.put("fontColor", new HashParam(Type.COLOR, null));
-		temp.put("ifBefore", new HashParam(""));
-		temp.put("ifAfter", new HashParam(""));
+		temp.put("ifBefore", new HashParam(Type.TIME, null));
+		temp.put("ifAfter", new HashParam(Type.TIME, null));
 		temp.put("disabled", new HashParam(Type.BOOLEAN, false));
 		temp.put("id", new HashParam(""));
 		temp.put("scriptVar", new HashParam(""));
@@ -230,7 +221,6 @@ public class Button implements Comparable<Button>
 
 	protected void merge(HashCommandProcessor processor)
 	{
-		String temp;
 		//Seems like there ought to be a less verbose way to do things than this, but I couldn't find one that seemed reliable enough.
 		for (String key: processor.getKeys()) {
 			switch(key) {
@@ -286,18 +276,10 @@ public class Button implements Comparable<Button>
 					this.fontColor = processor.getColor("fontColor", false);
 					break;
 				case "ifbefore":
-					temp = processor.getString("ifBefore");
-					if (temp == "")
-						this.ifBefore = null;
-					else
-						this.ifBefore = LocalTime.parse(temp);
+					this.ifBefore = processor.getTime("ifBefore");
 					break;
 				case "ifafter":
-					temp = processor.getString("ifAfter");
-					if (temp == "")
-						this.ifAfter = null;
-					else
-						this.ifAfter = LocalTime.parse(temp);
+					this.ifAfter = processor.getTime("ifAfter");
 					break;
 				case "disabled":
 					this.disabled = processor.getBool("disabled");

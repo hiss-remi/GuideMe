@@ -8,6 +8,7 @@ import java.util.Map;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
 import org.guideme.guideme.util.HashParam;
+import org.guideme.guideme.util.HashParam.*;
 import org.guideme.guideme.util.VeryInsensitiveMap;
 import org.mozilla.javascript.NativeObject;
 
@@ -85,17 +86,8 @@ public class Timer {
 		}
 		this.jScript = temp;
 
-		temp = processor.getString("ifBefore");
-		if (temp == "")
-			this.ifBefore = null;
-		else
-			this.ifBefore = LocalTime.parse(temp);
-
-		temp = processor.getString("ifAfter");
-		if (temp == "")
-			this.ifAfter = null;
-		else
-			this.ifAfter = LocalTime.parse(temp);
+		this.ifBefore = processor.getTime("ifBefore");
+		this.ifAfter = processor.getTime("ifAfter");
 
 		this.id = processor.getString("id");
 
@@ -122,8 +114,8 @@ public class Timer {
 		temp.put("set", new HashParam(""));
 		temp.put("unset", new HashParam(""));
 		temp.put("target", new HashParam(""));
-		temp.put("ifBefore", new HashParam(""));
-		temp.put("ifAfter", new HashParam(""));
+		temp.put("ifBefore", new HashParam(Type.TIME, null));
+		temp.put("ifAfter", new HashParam(Type.TIME, null));
 		temp.put("id", new HashParam(""));
 		temp.put("repeat", new HashParam(HashParam.Type.RANGE, ""));
 		return temp;

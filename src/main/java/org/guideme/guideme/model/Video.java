@@ -80,17 +80,8 @@ public class Video
 		}
 		this.jscript = temp;
 
-		temp = processor.getString("ifBefore");
-		if (temp == "")
-			this.ifBefore = null;
-		else
-			this.ifBefore = LocalTime.parse(temp);
-
-		temp = processor.getString("ifAfter");
-		if (temp == "")
-			this.ifAfter = null;
-		else
-			this.ifAfter = LocalTime.parse(temp);
+		this.ifBefore = processor.getTime("ifBefore");
+		this.ifAfter = processor.getTime("ifAfter");
 
 		this.scriptVar = processor.getString("scriptVar");
 		this.volume = processor.getInt("volume");
@@ -113,8 +104,8 @@ public class Video
 		temp.put("javaScript", new HashParam(""));
 		temp.put("jScript", new HashParam(""));
 		temp.put("script", new HashParam(""));
-		temp.put("ifBefore", new HashParam(""));
-		temp.put("ifAfter", new HashParam(""));
+		temp.put("ifBefore", new HashParam(Type.TIME, null));
+		temp.put("ifAfter", new HashParam(Type.TIME, null));
 		temp.put("scriptVar", new HashParam(""));
 		temp.put("volume", new HashParam(Type.INTEGER, 100));
 		return temp;
