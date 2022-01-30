@@ -3,6 +3,7 @@ package org.guideme.guideme.model;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
@@ -69,7 +70,7 @@ public class Video
 		this.set = processor.getString("set");
 		this.unSet = processor.getString("unset");
 		this.repeat = processor.getString("repeat");
-		if (this.repeat == "")
+		if (Objects.equals(this.repeat, ""))
 			this.repeat = processor.getString("loops");
 		this.jscript = processor.getScript();
 

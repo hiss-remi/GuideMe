@@ -5,10 +5,10 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.swt.graphics.Color;
 import org.guideme.guideme.settings.ComonFunctions;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.NativeArray;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 public class HashParam {
 
@@ -54,7 +54,7 @@ public class HashParam {
             return Context.jsToJava(obj, Double.class);
         else if (type == Type.COLOR) {
             String color = (String) Context.jsToJava(obj, String.class);
-            if (color == "")
+            if (Objects.equals(color, ""))
                 return stock;
             else if (color.startsWith("#"))
                 return comonFunctions.decodeHexColor(color);
@@ -63,8 +63,7 @@ public class HashParam {
         } else if (type == Type.RANGE) {
             if (obj instanceof List) {
                 List<Object> arr = (List<Object>) obj;
-                String temp =  "(" + Context.jsToJava(arr.get(0), String.class) + ".." + Context.jsToJava(arr.get(1), String.class) + ")";
-                return temp;
+                return "(" + Context.jsToJava(arr.get(0), String.class) + ".." + Context.jsToJava(arr.get(1), String.class) + ")";
             } else
                 return Context.jsToJava(obj, String.class);
         } else if (type == Type.BOOLEAN) {
@@ -81,7 +80,7 @@ public class HashParam {
                         " is not a valid type for Enum " + eclass.getName());
         } else if (type == Type.TIME) {
             String temp = (String) obj;
-            if (temp == "")
+            if (Objects.equals(temp, ""))
                 return  null;
             else
                 return LocalTime.parse(temp);

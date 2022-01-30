@@ -113,10 +113,7 @@ public class HashCommandProcessor {
 
     public Object getEnum(String key)
     {
-        if (args.containsKey(key))
-            return args.get(key);
-        else
-            return null;
+        return args.getOrDefault(key, null);
     }
 
     public LocalTime getTime(String key)

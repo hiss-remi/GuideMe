@@ -1,7 +1,6 @@
 package org.guideme.guideme.model;
 
 import org.guideme.guideme.util.HashCommandProcessor;
-import org.guideme.guideme.util.HashParam;
 import org.mozilla.javascript.NativeObject;
 
 public class GlobalButton extends Button {
