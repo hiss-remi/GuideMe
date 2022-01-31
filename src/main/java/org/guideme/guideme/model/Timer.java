@@ -87,10 +87,6 @@ public class Timer {
 
 		this.id = processor.getString("id");
 
-		this.setRepeat(processor.getString("repeat"));
-		if (this.delay == null)
-			this.delay = this.repeat;
-
 		if (this.delay == null)
 			throw new IllegalArgumentException("addTimer must have a delay or a repeat parameter");
 	}
@@ -116,8 +112,6 @@ public class Timer {
 		temp.put("repeat", new HashParam(HashParam.Type.RANGE, ""));
 		return temp;
 	}
-
-	public int getTimerMSec() { return (int) (comonFunctions.getRandomDouble(delay) * 1000); }
 
 	public String getjScript() {
 		return jScript;
