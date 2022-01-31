@@ -242,7 +242,7 @@ public class OverRide {
 		}
 	}
 
-	
+
 	/** @exclude */
 	public Button getButton(int i) {
 		return button.get(i);
@@ -648,7 +648,7 @@ public class OverRide {
 		buttonThread.defaultBtn = defaultBtn;
 		Display.getDefault().syncExec(buttonThread);	
 	}
-	
+
 	private class WebcamButtonThread2 implements Runnable
 	{
 		public OverRide overRide;
