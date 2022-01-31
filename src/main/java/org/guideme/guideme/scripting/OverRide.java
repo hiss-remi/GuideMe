@@ -1037,6 +1037,28 @@ public class OverRide {
 		this.audio2 = new Audio(id, startAt, stopAt, target, "", "", set, unSet, repeat, jscript, "", "", "", volume);
 	}
 
+	/**
+	 * Play an audio file
+	 *
+	 * @param params Object containing the parameters for the video
+	 */
+	public void setAudio(NativeObject params) {
+		Audio temp = new Audio(params);
+		if (temp.canShow(guide.getFlags()))
+			this.audio = temp;
+	}
+
+	/**
+	 * Play an audio file on audio2
+	 *
+	 * @param params Object containing the parameters for the video
+	 */
+	public void setAudio2(NativeObject params) {
+		Audio temp = new Audio(params);
+		if (temp.canShow(guide.getFlags()))
+			this.audio2 = temp;
+	}
+
 	/** @exclude */
 	public Metronome getMetronome() {
 		return metronome;
