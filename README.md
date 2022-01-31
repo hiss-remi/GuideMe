@@ -16,5 +16,5 @@ or use one of the full releases that include these dependencies.
 
 ## Open Source Software
 Release builds of this application include OpenJDK from AdoptOpenJDK and VLC Media Player
-* AdoptOpenJDK: [Website](https://adoptopenjdk.net/) [Source Code](https://github.com/openjdk/jdk)
+* Adoptium OpenJDK: [Website](https://adoptium.net/) [Source Code](https://github.com/openjdk/jdk)
 * VLC Media Player: [Website](https://www.videolan.org/vlc/index.html) [Source Code](https://www.videolan.org/vlc/download-sources.html)

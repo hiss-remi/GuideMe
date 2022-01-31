@@ -8,12 +8,12 @@
 	<packaging>jar</packaging>
 
 	<name>GuideMe</name>
-	<url>https://github.com/hiss-remi/GuideMe</url>
+	<url>https://github.com/EroticDevelopment/GuideMe</url>
 	<inceptionYear>2013</inceptionYear>
 	<description>An interactive story viewer.</description>
 
 	<issueManagement>
-		<url>https://github.com/hiss-remi/GuideMe/issues</url>
+		<url>https://github.com/EroticDevelopment/GuideMe/issues</url>
 		<system>GitHub</system>
 	</issueManagement>
 
@@ -48,17 +48,17 @@
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.15.0</version>
+			<version>2.17.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.15.0</version>
+			<version>2.17.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>2.15.0</version>
+			<version>2.17.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.swt</groupId>
@@ -96,11 +96,6 @@
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>20041127.091804</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.xmlbeans</groupId>
-			<artifactId>xmlbeans</artifactId>
-			<version>2.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.lingala.zip4j</groupId>

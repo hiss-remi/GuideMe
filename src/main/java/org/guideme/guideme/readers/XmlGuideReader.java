@@ -153,13 +153,17 @@ public class XmlGuideReader {
 		pageVersionNotMet.addButton(new Button(nextPage, "Continue"));
 		chapter.getPages().put(pageVersionNotMet.getId(), pageVersionNotMet);
 
+		FileInputStream fis = null;
+		UnicodeBOMInputStream ubis = null;
+		XMLStreamReader reader = null;
+
 		try {
-			FileInputStream fis = new FileInputStream(xmlFileName);
-			UnicodeBOMInputStream ubis = new UnicodeBOMInputStream(fis);
+			fis = new FileInputStream(xmlFileName);
+			ubis = new UnicodeBOMInputStream(fis);
 			ubis.skipBOM();
 
 			XMLInputFactory factory = XMLInputFactory.newInstance();
-			XMLStreamReader reader = factory.createXMLStreamReader(ubis);
+			reader = factory.createXMLStreamReader(ubis);
 			while (reader.hasNext()) {
 				int eventType = reader.next(); 
 				switch (eventType) {
@@ -1186,16 +1190,16 @@ public class XmlGuideReader {
 			if (!strTmpTitle.equals("") || !strTmpAuthor.equals("")) {
 				guide.setTitle(strTmpTitle + ", " + strTmpAuthor);
 			}
-			//Clean up
-			reader.close();		
-			ubis.close();
-			fis.close();
 		} catch (Exception e) {
 			logger.error("loadXML " + xmlFileName + " Exception ", e);
+		} finally {
+			//Clean up
+			try {
+				if (reader != null) reader.close();
+				if (ubis != null) ubis.close();
+				if (fis != null) fis.close();
+			} catch (Exception ignored) {}
 		}
-		
-		
-		
 	}
 
 	private String processText(XMLStreamReader reader, String tagName) throws XMLStreamException {
