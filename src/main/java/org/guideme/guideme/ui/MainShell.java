@@ -1849,7 +1849,7 @@ public class MainShell {
 									//Normal delay so display seconds left 
 									//(plus any offset if you are being sneaky) 
 									diff = calCountDown.getTimeInMillis() - cal.getTimeInMillis();
-									diff = diff + (guide.getDelStartAtOffSet() * 1000);
+									diff = diff + (guide.getDelStartAtOffSet());
 									intSeconds = (int) ((diff / 1000) + 1);
 									intMinutes = intSeconds / 60;
 									intSeconds = intSeconds - (intMinutes * 60);
@@ -1892,8 +1892,15 @@ public class MainShell {
 								//logger.debug("Timer: " + objTimer.getId() + " Now: " + cal.getTime());
 								if (cal.after(calTemp)) {
 									logger.debug("Timer: " + objTimer.getId() + " Triggered");
-									//add a year to the timer so we don't trigger it again
-									calTemp.add(Calendar.YEAR, 1);
+									if (objTimer.isRepeating()) {
+										int repeat = objTimer.getRepeatMSec();
+										calTemp.add(Calendar.MILLISECOND, repeat);
+										//logger.debug("Timer: " + objTimer.getId() + " Repeat: " + repeat);
+									}
+									else {
+										//add a year to the timer so we don't trigger it again
+										calTemp.add(Calendar.YEAR, 1);
+									}
 									pair.getValue().setTimerEnd(calTemp);
 									comonFunctions.SetFlags(objTimer.getSet(), guide.getFlags());
 									comonFunctions.UnsetFlags(objTimer.getUnSet(), guide.getFlags());
@@ -3171,8 +3178,23 @@ public class MainShell {
 	public void resetTimer(String id, int delay) {
 		Timer objTimer = timer.get(id);
 		Calendar timCountDown = Calendar.getInstance();
-		timCountDown.add(Calendar.SECOND, delay);
+		timCountDown.add(Calendar.MILLISECOND, delay);
 		objTimer.setTimerEnd(timCountDown);		
+	}
+
+	public void resetTimer(String id, int delay, String repeat) {
+		Timer objTimer = timer.get(id);
+		Calendar timCountDown = Calendar.getInstance();
+		timCountDown.add(Calendar.MILLISECOND, delay);
+		objTimer.setTimerEnd(timCountDown);
+		objTimer.setRepeat(repeat);
+	}
+
+	public void stopTimer(String id) {
+		Timer objTimer = timer.get(id);
+		Calendar timCountDown = Calendar.getInstance();
+		timCountDown.add(Calendar.YEAR, 1);
+		objTimer.setTimerEnd(timCountDown);
 	}
 	
 	public void updateJConsole(String logText) {

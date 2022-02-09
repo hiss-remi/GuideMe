@@ -369,7 +369,58 @@ public class ComonFunctions{
 		
 		return intRandom;
 	}
-	
+
+	//Get random float between x and y where Random is (x..y)
+	//If x and y do not contain decimals, the return value should always be a whole number (but consider getRandom instead)
+	//if just a number is passed in it returns that number
+	//this is so we can just pass the parameter in for things like delays where
+	//"15" would be a delay of 15 seconds but "(5..15)" would be a random delay between 5 and 15 seconds
+	public double getRandomDouble(String random) {
+		double dblRandom = 0;
+		int intPos1;
+		int intPos2;
+		int intPos3;
+		int intMin;
+		int intMax;
+		Double dblMin;
+		Double dblMax;
+		String strMin;
+		String strMax;
+
+		try {
+			intPos1 = random.indexOf("(");
+			if (intPos1 > -1) {
+				intPos2 = random.indexOf("..", intPos1);
+				if (intPos2 > -1) {
+					intPos3 = random.indexOf(")", intPos2);
+					if (intPos3 > -1) {
+						strMin = random.substring(intPos1 + 1, intPos2);
+						strMax = random.substring(intPos2 + 2, intPos3);
+						if (strMin.indexOf(".") > -1 || strMax.indexOf(".") > -1)
+						{
+							dblMin = Double.parseDouble(strMin);
+							dblMax = Double.parseDouble(strMax);
+							dblRandom = getRandomDouble(dblMin, dblMax);
+						}
+						else {
+							intMin = Integer.parseInt(strMin);
+							intMax = Integer.parseInt(strMax);
+							dblRandom = mRandom.nextInt(intMax - intMin + 1) + intMin;
+						}
+					}
+				}
+			} else {
+				dblRandom = Double.parseDouble(random);
+			}
+		} catch (NumberFormatException en) {
+			dblRandom = 0;
+		} catch (Exception e) {
+			logger.error(e.getLocalizedMessage(),e);
+		}
+
+		return dblRandom;
+	}
+
 	//gets a random number between intMin and intMax inclusive
 	public int getRandom(int intMin, int intMax)
 	{
@@ -381,6 +432,9 @@ public class ComonFunctions{
 	{
 		return mRandom.nextInt(intMax - 1 + 1) + 1;
 	}
+
+	//gets a random float between fltMin (inclusive) and fltMax (exclusive)
+	public Double getRandomDouble(Double dblMin, Double dblMax) { return dblMin + mRandom.nextFloat() * (dblMax - dblMin);}
 	
 	public int getMilisecFromTime(String iTime) {
 		int intPos1;

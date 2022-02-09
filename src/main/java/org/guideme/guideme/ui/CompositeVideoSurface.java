@@ -41,7 +41,13 @@ public class CompositeVideoSurface extends VideoSurface {
             Class<?> objectClass = composite.getClass();
             for (Field field : objectClass.getFields()) {
                 if (field.getName().equals("handle")) {
-                    return (long)field.get(composite);
+                    Object handle = field.get(composite);
+                    if (handle instanceof Integer) {
+                        return ((Integer) handle).longValue();
+                    }
+                    else {
+                        return (long) handle;
+                    }
                 }
                 if (field.getName().equals("view")) {
                     Class<?> viewObjectClass = field.get(composite).getClass();

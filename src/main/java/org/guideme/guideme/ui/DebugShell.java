@@ -519,7 +519,7 @@ public class DebugShell {
 						Delay delay = dispPage.getDelay(i);
 						item = new TableItem (dlyTable, SWT.NONE);
 						item.setBackground(color);
-						item.setText (0, String.valueOf(delay.getDelaySec()));
+						item.setText (0, String.valueOf(delay.getDelayMSec() / 1000.0));
 						item.setText (1, delay.getstyle());
 						item.setText (2, delay.getTarget());
 						item.setText (3, delay.getjScript());

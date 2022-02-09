@@ -1136,7 +1136,14 @@ export const XmlData = [
       {
         name: "seconds",
         required: true,
-        format: <span>10</span>,
+        format: <span>10<br/>(5..10)</span>,
+        description: <span>Number of seconds for the timer.</span>
+      },
+      {
+        name: "seconds",
+        required: false,
+        minVersion: "0.4.5",
+        format: <span>10<br/>(5..10)</span>,
         description: <span>Number of seconds for the timer.</span>
       },
       {

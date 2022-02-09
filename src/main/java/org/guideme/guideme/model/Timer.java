@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
+import java.util.Objects;
 
 import org.guideme.guideme.settings.ComonFunctions;
 import org.guideme.guideme.util.HashCommandProcessor;
@@ -26,6 +27,7 @@ public class Timer {
 	private LocalTime ifAfter; //Time of day must be after this time
 	private String id;
 	private String target;
+	private String repeat = null;
 	private ComonFunctions comonFunctions = ComonFunctions.getComonFunctions();
 	
 	public Timer(String delay, String jScript) {
@@ -64,9 +66,7 @@ public class Timer {
 		}
 	}
 
-	public int getTimerSec() {
-		return comonFunctions.getRandom(delay);
-	}
+	public int getTimerMSec() { return (int) (comonFunctions.getRandomDouble(delay) * 1000); }
 
 	public Timer(NativeObject params) {
 		HashCommandProcessor processor = new HashCommandProcessor(mapper);
@@ -188,6 +188,27 @@ public class Timer {
 
 	public String getId() {
 		return id;
+	}
+
+	public void setRepeat(String repeat) {
+		if (Objects.equals(repeat, "")) {
+			this.repeat = null;
+		} else {
+			this.repeat = repeat;
+		}
+	}
+
+	public String getRepeat() { return repeat; }
+
+	public boolean isRepeating() { return repeat != null;}
+
+	public int getRepeatMSec() {
+		if (this.repeat == null) {
+			return Integer.MAX_VALUE;
+		}
+		else {
+			return (int) (comonFunctions.getRandomDouble(repeat) * 1000);
+		}
 	}
 
 }

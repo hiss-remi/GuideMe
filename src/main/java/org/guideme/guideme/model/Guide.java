@@ -932,7 +932,7 @@ public class Guide {
 	public void addTimer(String delay, String jScript, String imageId, String text, String set, String unSet, String id) {
 		Timer timer = new Timer(delay, jScript, imageId, text, "", "", set, unSet, "", "", id);
 		Calendar timCountDown = Calendar.getInstance();
-		timCountDown.add(Calendar.SECOND, timer.getTimerSec());
+		timCountDown.add(Calendar.MILLISECOND, timer.getTimerMSec());
 		timer.setTimerEnd(timCountDown);
 		mainshell.addTimer(timer);		
 	}
@@ -950,7 +950,48 @@ public class Guide {
 	public void addTimer(String delay, String jScript, String set, String unSet, String id, String target) {
 		Timer timer = new Timer(delay, jScript, "", "", "", "", set, unSet, "", "", id, target);
 		Calendar timCountDown = Calendar.getInstance();
-		timCountDown.add(Calendar.SECOND, timer.getTimerSec());
+		timCountDown.add(Calendar.MILLISECOND, timer.getTimerMSec());
+		timer.setTimerEnd(timCountDown);
+		mainshell.addTimer(timer);
+	}
+
+	/**
+	 * Adds a timer to change various aspects of the screen / run a javascript function
+	 *
+	 * @param delay a time in seconds before the timer triggers
+	 * @param repeat the repeat time in seconds after the initial activation
+	 * @param jScript a javascript function to run when the timer triggers
+	 * @param imageId the filename of the image to change to when the timer triggers
+	 * @param text the html text to set the right html pane to when the timer triggers
+	 * @param set the flags to set when the timer triggers
+	 * @param unSet the flags to clear when the timer triggers
+	 * @param id the identifier (name) of the new timer to manipulate the timer later
+	 */
+	public void addRepeatTimer(String delay, String repeat, String jScript, String imageId, String text, String set, String unSet, String id) {
+		Timer timer = new Timer(delay, jScript, imageId, text, "", "", set, unSet, "", "", id);
+		timer.setRepeat(repeat);
+		Calendar timCountDown = Calendar.getInstance();
+		timCountDown.add(Calendar.MILLISECOND, timer.getTimerMSec());
+		timer.setTimerEnd(timCountDown);
+		mainshell.addTimer(timer);
+	}
+
+	/**
+	 * Adds a timer to change various aspects of the screen / run a javascript function
+	 *
+	 * @param delay a time in seconds before the timer triggers
+	 * @param repeat the repeat time in seconds after the initial activation
+	 * @param jScript a javascript function to run when the timer triggers
+	 * @param set the flags to set when the timer triggers
+	 * @param unSet the flags to clear when the timer triggers
+	 * @param id the identifier (name) of the new timer to manipulate the timer later
+	 * @param target the page to go to when the timer triggers
+	 */
+	public void addRepeatTimer(String delay, String repeat, String jScript, String set, String unSet, String id, String target) {
+		Timer timer = new Timer(delay, jScript, "", "", "", "", set, unSet, "", "", id, target);
+		timer.setRepeat(repeat);
+		Calendar timCountDown = Calendar.getInstance();
+		timCountDown.add(Calendar.MILLISECOND, timer.getTimerMSec());
 		timer.setTimerEnd(timCountDown);
 		mainshell.addTimer(timer);
 	}
@@ -962,7 +1003,27 @@ public class Guide {
 	 * @param delay the time in seconds (from now) before the timer triggers
 	 */
 	public void resetTimer(String id, String delay) {
-		mainshell.resetTimer(id, comonFunctions.getRandom(delay));
+		mainshell.resetTimer(id, (int) (comonFunctions.getRandomDouble(delay) * 1000));
+	}
+
+	/**
+	 * Resets the count on a timer and changes the repeat time.
+	 *
+	 * @param id the id set when the timer was created
+	 * @param delay the time in seconds (from now) before the timer triggers
+	 * @param repeat the time in seconds for the timer to repeat after the next trigger
+	 */
+	public void resetTimer(String id, String delay, String repeat) {
+		mainshell.resetTimer(id, (int) (comonFunctions.getRandomDouble(delay) * 1000), repeat);
+	}
+
+	/**
+	 * Stops the count on a timer
+	 *
+	 * @param id the id set when the timer was created
+	 */
+	public void stopTimer(String id) {
+		mainshell.stopTimer(id);
 	}
 	
 	/**

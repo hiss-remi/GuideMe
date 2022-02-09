@@ -103,7 +103,7 @@ public class MainShellMock extends MainShell {
 
 	@Override
 	public void addDelayButton(Guide guide) {
-		logger.debug("MainShellMock addDelayButton style:" + guide.getDelStyle() + " StartAtOffSet:" + guide.getDelStartAtOffSet() + " Target:" + guide.getDelTarget() + " Set:" + guide.getDelaySet() + " UnSet:" + guide.getDelayUnSet());
+		logger.debug("MainShellMock addDelayButton style:" + guide.getDelStyle() + " StartAtOffSet:" + (guide.getDelStartAtOffSet() / 1000.0) + " Target:" + guide.getDelTarget() + " Set:" + guide.getDelaySet() + " UnSet:" + guide.getDelayUnSet());
 	}
 
 	@Override
